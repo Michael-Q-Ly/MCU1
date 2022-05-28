@@ -1,0 +1,13 @@
+1. What is the base address of the AHB1 bus peripherals?
+
+2. What is the base address of the GPIOA registers?
+
+3. What is the base address of the RCC engine registers of the MCU?
+
+4. What is the base address of the APB1 peripherals?
+
+5. What is the base address of FLASH memory?
+
+6. What is the base address of SRAM2?
+
+7. What is the base address of the ADC registers?
