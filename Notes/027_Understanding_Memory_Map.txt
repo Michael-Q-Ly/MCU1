@@ -1,0 +1,9 @@
+Memory Map of the MCU (STM32F429ZIT)
+================================================
+ARM Cortex M4
+Width of the system is 32 bits
+The processoe can produce 2^32 different addresses (4G)
+0x0000)0000 to 0xFFFF_FFFF
+
+When the processor products 0x4002_0000 on the system bus, it
+is actually referring to the GPIOA registers
