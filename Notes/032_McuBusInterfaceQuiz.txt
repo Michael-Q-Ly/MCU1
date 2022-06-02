@@ -1,0 +1,46 @@
+Reference: STM32F429ZIT MCU
+
+1.      Is it true that System Bus is not connected to FLASH memory?
+
+
+2.      The processor can fetch instructions from SRAM over to I-code bus. T/F?
+
+
+3.      System Bus can operate at a speed up to 180MHz. T/F?
+
+
+4.      SRAMs are connected to System Bus. T/F?
+
+
+5.      APB1 bus can operate at a speed up to 180MHz?
+
+
+6.      Let's say that I have a peripheral whose datasheet says that its operating frequency or speed must
+        be above 95MHz. Can I connect that peripgeral via APB2 bus? Why not?
+
+
+7.      The processor can fetch instructions asa well as data simultaneously from SRAM. T/F?
+
+
+8.      The processor can fetch instructions as well as data simultaneously from FLASH. T/F?
+
+
+9.      What is the max HCLK clock value of the MCU?
+
+
+10.     What is the max P1CLK balue of the MCU?
+
+
+11.     What is the max P2CLK value of the MCU?
+
+
+12.     GPIOs and processor communicate over AHB1 bus. T/F?
+
+
+13.     USB OTG and processor communicate over AHB2 bus. T/F?
+
+
+14.     USB OTG and GPIOs can communicate to the processor concurrently or simultaneously? T/F?
+
+
+15.     The processor can talk to FLASH memory and SRAM simulatenously. T/F?
