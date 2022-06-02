@@ -1,46 +1,51 @@
 Reference: STM32F429ZIT MCU
 
 1.      Is it true that System Bus is not connected to FLASH memory?
-
+True. Reference manual - section 3, Fig. 3 says it is connected to I-Code and D-Code
 
 2.      The processor can fetch instructions from SRAM over to I-code bus. T/F?
-
+False. SRAM is connected to S-Bus.
 
 3.      System Bus can operate at a speed up to 180MHz. T/F?
-
+True. S-Bus is a port of  the 180MHz ARM Cortex M4 FPU.
 
 4.      SRAMs are connected to System Bus. T/F?
-
+True. Section 3, Fig. 3 of the reference manual shows that.
 
 5.      APB1 bus can operate at a speed up to 180MHz?
-
+False. APB1 has max frequency of 45MHz.
 
 6.      Let's say that I have a peripheral whose datasheet says that its operating frequency or speed must
         be above 95MHz. Can I connect that peripgeral via APB2 bus? Why not?
+You cannot connect it. APB2 has a max frequency of 90MHz.
 
-
-7.      The processor can fetch instructions asa well as data simultaneously from SRAM. T/F?
-
+7.      The processor can fetch instructions as well as data simultaneously from SRAM. T/F?
+False. There is only one bus that connects to SRAM. We cannot simultaneously read from SRAM.
 
 8.      The processor can fetch instructions as well as data simultaneously from FLASH. T/F?
+True. We have two separate buses: I-Code and D-Code. Also notice that the flash interface has two buses that lead to it.
 
+9.      What is the max HCLK value of the MCU?
+Recall that HCLK is used to describe the operating clock frequency of the AHB Bus. In this case, it is the AHB1 and AHB2 buses.
+The current operating frequency of the bus is known as HCLK.
+Thus, its max value is 180MHz.
 
-9.      What is the max HCLK clock value of the MCU?
-
-
-10.     What is the max P1CLK balue of the MCU?
-
+10.     What is the max P1CLK value of the MCU?
+P1CLK refers to the current operating frequency of APB1 Bus, which has a max operating frequency of 45 MHz.
+Thus, P1CLK has max value of 45 MHz.
 
 11.     What is the max P2CLK value of the MCU?
-
+P2CLK refers to current operating frequency of APB2 Bus.
+Thus, P2CLK has max value 90 MHz.
 
 12.     GPIOs and processor communicate over AHB1 bus. T/F?
-
+True. We can take a look at the datasheet's block diagram for this.
 
 13.     USB OTG and processor communicate over AHB2 bus. T/F?
-
+True. USB OTG interfaces through AHB2 which then goes to AHB Bus.
 
 14.     USB OTG and GPIOs can communicate to the processor concurrently or simultaneously? T/F?
-
+False. Even though they use different AHB buses, once AHB1 and AHB2 reach the AHB Bus, they must be SERIALIZED because they both go to S-Bus.
 
 15.     The processor can talk to FLASH memory and SRAM simulatenously. T/F?
+True. There We can have I-Code and D-Code simultaneously talk to FLASH and S-Bus can talk to SRAM.
