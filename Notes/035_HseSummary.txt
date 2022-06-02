@@ -1,0 +1,11 @@
+Summary of HSE
+========================================
+HSE can be provided to the MCU via a crystal or external source
+(from another ckt or from another MCU)
+
+On the STM32-DISC board, HSE is 8 MHz provided by the onboard crystal
+
+On the NUCLEO board, HSE is of 8MHz pulled from the ST-LINK Ckt
+
+You do not need to solder or desolder anything on your board for this course
+You do not need to make any changes unless you have any special requirements
