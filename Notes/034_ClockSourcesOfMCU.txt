@@ -1,0 +1,6 @@
+Clock Sources of MCU
+====================================================================
+
+1)  Crystal Oscillator              (External to the MCU)   (HSE)    8MHZ
+2)  RC Oscillator                   (Internal to the MCU)   (HSI)
+3)  PLL (Phase-Locked Loop)         (Internal to the MCU)
