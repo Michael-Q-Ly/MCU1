@@ -1,13 +1,26 @@
 1. What is the base address of the AHB1 bus peripherals?
+        0x40020000
 
 2. What is the base address of the GPIOA registers?
+        0x40020000
 
 3. What is the base address of the RCC engine registers of the MCU?
+        0x40023800
 
 4. What is the base address of the APB1 peripherals?
+        0x40000000
 
 5. What is the base address of FLASH memory?
+        0x80000000
 
-6. What is the base address of SRAM2?
+6. What is the base address of SRAM?
+        BASE_ADDRESS_OF_SRAM1   = 0x20000000
+        SIZE_OF_SRAM1           = 112kB
+        BASE_ADDRESS_OF_SRAM2   = BASE_ADDRESS_OF_SRAM1 + SIZE_OF_SRAM1
+        SIZE_OF_SRAM2           = 16kB
+        BASE_ADDRESS_OF_SRAM3   = 0x20020000
+        SIZE_OF_SRAM3           = 64Kb
+                * Note that SRAM3 is only available for STM32F42xx and STM32F43xx mapped at address 0x20020000
 
 7. What is the base address of the ADC registers?
+        0x40012000
