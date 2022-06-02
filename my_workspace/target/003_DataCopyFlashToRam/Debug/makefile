@@ -33,34 +33,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := 002_sample_app
+BUILD_ARTIFACT_NAME := 003_DataCopyFlashToRam
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-002_sample_app.elf \
+003_DataCopyFlashToRam.elf \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-002_sample_app.list \
+003_DataCopyFlashToRam.list \
 
 OBJCOPY_BIN += \
-002_sample_app.bin \
+003_DataCopyFlashToRam.bin \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: 002_sample_app.elf secondary-outputs
+main-build: 003_DataCopyFlashToRam.elf secondary-outputs
 
 # Tool invocations
-002_sample_app.elf: $(OBJS) $(USER_OBJS) C:\Users\Micha\OneDrive\Documents\Embedded_C\MCU1\my_workspace\target\002_sample_app\STM32F429ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "002_sample_app.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Micha\OneDrive\Documents\Embedded_C\MCU1\my_workspace\target\002_sample_app\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="002_sample_app.map" -Wl,--gc-sections -static -specs=rdimon.specs -lc -lrdimon --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+003_DataCopyFlashToRam.elf: $(OBJS) $(USER_OBJS) C:\Users\Micha\OneDrive\Documents\Embedded_C\MCU1\my_workspace\target\003_DataCopyFlashToRam\STM32F429ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "003_DataCopyFlashToRam.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Micha\OneDrive\Documents\Embedded_C\MCU1\my_workspace\target\003_DataCopyFlashToRam\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="003_DataCopyFlashToRam.map" -Wl,--gc-sections -static -specs=rdimon.specs -lc -lrdimon --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -69,19 +69,19 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-002_sample_app.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "002_sample_app.list"
+003_DataCopyFlashToRam.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "003_DataCopyFlashToRam.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-002_sample_app.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "002_sample_app.bin"
+003_DataCopyFlashToRam.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "003_DataCopyFlashToRam.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) 002_sample_app.bin 002_sample_app.elf 002_sample_app.list default.size.stdout
+	-$(RM) 003_DataCopyFlashToRam.bin 003_DataCopyFlashToRam.elf 003_DataCopyFlashToRam.list default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_BIN)
