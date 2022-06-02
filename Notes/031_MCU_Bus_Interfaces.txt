@@ -1,0 +1,16 @@
+What is the base address of the flash memory of your MCU?
+0x08000000
+
+What is the bad address of the RAM memory of your MCU?
+0x20000000
+
+Notes about MCU Bus Interfaces
+============================================
+If the instructions are present in between the memory locations 0x00000000 to 0x1FFFFFFC, then
+the Cortex processor will fetch the instructions using I-CODE interface
+
+If the instructions are present outside of 0x00000000 to 0x1FFFFFFF, then the processor
+fetches the data over D-Code bus interface
+
+If the data is present outside of 0x00000000 to ox1FFFFFFF memory locations, then the
+data will be fetched over the S-bus interface
