@@ -1,0 +1,15 @@
+Summary: Button interrupt
+====================================
+How does a button issue interrupts to the processor in STM32?
+
+1.      The button is connected to a GPIO pin of the MCU
+
+2.      The GPIO pin should be configured to input mode
+
+3.      The link between a GPIO port and the relevant EXTI line must be
+        established using the SYSCFG_EXTICRx register
+
+4.      Configure the trigger detection (falling/rising/both) for
+        relevant EXTI line (this is done via EXTI control registers)
+
+5.      Implement the handler to service the interrupt
