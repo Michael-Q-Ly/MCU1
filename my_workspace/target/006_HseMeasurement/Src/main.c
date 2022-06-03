@@ -36,7 +36,75 @@
     #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
+// RCC
+#define RCC_BASE_ADDR                   0x40023800UL
+#define RCC_CTRL_REG_OFFSET             0x00UL
+#define RCC_CTRL_REG_ADDRESS            (RCC_BASE_ADDR + RCC_CTRL_REG_OFFSET)
+#define RCC_CFGR_REG_OFFSET             0x08UL
+#define RCC_CFGR_REG_ADDR               (RCC_BASE_ADDR + RCC_CFGR_REG_OFFSET)
+#define RCC_AHB1_EN_REG_OFFSET          0x30UL
+// GPIO
+#define GPIOA_BASE_ADDR                 0x40020000UL
+#define GPIOA_PORT_MODE_REG_OFFSET      0X00UL
+#define GPIOA_ALT_FUN_HIGH_REG_OFFSET   0x24UL
+// Bit shifts
+#define BIT_0                           (1UL << 0)
+#define BIT_1                           (1UL << 1)
+#define BIT_8                           (1UL << 8)
+#define BIT_16                          (1UL << 16)
+#define BIT_17                          (1UL << 17)
+#define BIT_22                          (1UL << 22)
+#define BIT_25                          (1UL << 25)
+#define BIT_26                          (1UL << 26)
+
 int main(void) {
+    uint32_t *pRccCtrlReg = (uint32_t*) RCC_CTRL_REG_ADDRESS ;
+    uint32_t *pRccCfgrReg = (uint32_t*) RCC_CFGR_REG_ADDR ;
+
+    // 1. Enable the HSE clock using HSEON bit (RCC_CR)
+    *pRccCtrlReg |= BIT_16 ;
+
+    // 2. Wait until HSE clock from external crystal stabilizes
+    while (! (*pRccCtrlReg & BIT_17)) ;
+
+    // 4. Switch the system clock to HSE
+    *pRccCfgrReg |= BIT_0 ;
+
+/******************************** MCOx Settings ********************************/
+    // 1. Enable the RCC_CFGR MCO1 bit fields to select HSE as clock source
+    *pRccCfgrReg &= ~(0x3 << 21) ;   // Clear
+    *pRccCfgrReg |= BIT_22 ;         // Set
+    // Configure MCO1 precaler to divide by 4 ; ref manual is wrong - should be 26:24 rather than 24:26
+    *pRccCfgrReg |= BIT_26 ;
+    *pRccCfgrReg |= BIT_25 ;
+
+    // 2. Configure PA8 to AF0 mode to behave as MCO1 signal
+    /*
+     * You are not expected to understand the code below for the time being
+     * because the code is related to GPIO configurations, which will be
+     * covered in later sections of this course
+     */
+    
+    // 3. Enable the peripheral clock for GPIOA peripheral
+    uint32_t *pRccAhb1Enr = (uint32_t*)(RCC_BASE_ADDR + RCC_AHB1_EN_REG_OFFSET) ;
+    *pRccAhb1Enr |= BIT_0 ;                                                                 // Enable GPIOA peripheral clock
+
+    // 4. Configure the mode of GPIOA pin 8 as alternate function mode
+    uint32_t *pGPIOAModeReg = (uint32_t*)(GPIOA_BASE_ADDR + GPIOA_PORT_MODE_REG_OFFSET) ;
+    *pGPIOAModeReg &= ~(0x03 << 16) ;                                                       // Clear MODER8[1:0]
+    *pGPIOAModeReg |= (0x02 << 16) ;                                                        // Set MODER8[1:0] into Alternate Function Mode
+
+    // 5. Configure the alternation function register to set the mode 0 for PA8
+    uint32_t *pGPiOAAltFunHighReg = (uint32_t*)(GPIOA_BASE_ADDR + GPIOA_ALT_FUN_HIGH_REG_OFFSET) ;
+    /*
+     * Important note:
+     * Test this code only if you have the STM32F407 discover board. If you have any
+     * other board, then you can skip the testing and come back to this section to modify the code
+     * when you have a better understanding of GPIO settings
+     * 
+     * This code does, however, work just fine on the STM32F429ZIT Discovery 1 board.
+     */
+    *pGPiOAAltFunHighReg *= ~(0xF << 0) ;                                                   // Clear all bits in AFRH8[3:0]
     /* Loop forever */
 	for(;;);
 }
