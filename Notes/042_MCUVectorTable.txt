@@ -11,3 +11,19 @@ What are vectors?
 Addresses of what?
     Addresses of exception handlers. (System exceptions  + interrupts (external exceptions))
     15 system exceptions + 240 interrupts
+====================================================================
+
+Now, we have to understand how the GPIO pin interrupts the processor
+
+What is the design?
+
+How does the vendor deliver the GPIO interrupt to the processor?
+====================================================================
+
+Some peripherals deliver their interrupt to the NVIC over the EXTI
+line
+
+Some peripherals deliver their interrupt directly to the NVIC
+
+This is the design of ST; you may find some other design in TI,
+for example
