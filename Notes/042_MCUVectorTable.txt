@@ -1,0 +1,13 @@
+Vector Table Details of the MCU
+====================================================================
+
+What is vector table?
+    Table of vectors...
+
+What are vectors?
+    Direction (Pointers or addresses)
+    Table of addresses or pointers
+
+Addresses of what?
+    Addresses of exception handlers. (System exceptions  + interrupts (external exceptions))
+    15 system exceptions + 240 interrupts
