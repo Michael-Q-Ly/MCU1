@@ -1,0 +1,55 @@
+Understanding "volatile" Qualifier in C
+========================================================
+
+Its usage is very important in embedded systems; let's learn why we should care about this!
+
+
+Disassembly of optimization -O0
+========================================================
+                     main:
+080001ed: 0x0000b483   push    {r7}
+080001ef: 0x0000b000   sub     sp, #12
+080001f1: 0x0000af00   add     r7, sp, #0
+20                       uint32_t value = 0 ;
+080001f2: 0x00000023   movs    r3, #0
+080001f4: 0x00007b60   str     r3, [r7, #4]
+22                       p = (uint32_t*) SRAM_ADDRESS1 ;
+080001f6: 0x0000044b   ldr     r3, [pc, #16]   ; (0x8000208 <main+28>)
+080001f8: 0x00003b60   str     r3, [r7, #0]
+25                           value = *p ;
+080001fa: 0x00003b68   ldr     r3, [r7, #0]
+080001fc: 0x00001b68   ldr     r3, [r3, #0]
+080001fe: 0x00007b60   str     r3, [r7, #4]
+26                           if (value) {
+08000200: 0x00007b68   ldr     r3, [r7, #4]
+08000202: 0x0000002b   cmp     r3, #0
+08000204: 0x0000f9d0   beq.n   0x80001fa <main+14>
+32                       while (1) ;
+08000206: 0x0000fee7   b.n     0x8000206 <main+26>
+08000208: 0x00000400   movs    r4, r0
+0800020a: 0x00000020   movs    r0, #0
+
+
+Disassembly of optimization -O3
+========================================================
+
+                     main:
+080001ec: 0x0000fee7   b.n     0x80001ec <main>
+080001ee: 0x000000bf   nop  
+
+
+Disassembly of optimization -O3 with volatile keyword
+========================================================
+
+                     main:
+080001ed: 0x00004b1a   ldr     r3, [pc, #8]    ; (0x80001f8 <main+12>)
+25                           value = *p ;
+080001ee: 0x00001a68   ldr     r2, [r3, #0]
+26                           if (value) {
+080001f0: 0x0000002a   cmp     r2, #0
+080001f2: 0x0000fcd0   beq.n   0x80001ee <main+2>
+32                       while (1) ;
+080001f4: 0x0000fee7   b.n     0x80001f4 <main+8>
+080001f6: 0x000000bf   nop     
+080001f8: 0x00000400   movs    r4, r0
+080001fa: 0x00000020   movs    r0, #0
