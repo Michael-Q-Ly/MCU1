@@ -11,6 +11,8 @@
 #ifndef _STM32F29XX_H_
 #define _STM32F29XX_H_
 
+#include <stdint.h>
+
 /*
  * Base addresses of FLASH and SRAM memories
  */
@@ -81,5 +83,30 @@
 #define SYSCFG_BASE_ADDR        (APB2_PERIPH_BASE_ADDR + 0X3800)
 #define USART1_BASE_ADDR        (APB2_PERIPH_BASE_ADDR + 0X1000)
 #define USART6_BASE_ADDR        (APB2_PERIPH_BASE_ADDR + 0X1400)
+
+
+
+
+
+/************************************ Peripheral Register Definition Structures ************************************/
+
+/*
+ * Note: Registers of a peripheral are specific to MCU
+ * E.g.: The number of registers of SPI peripheral of STM32F4xxfamily of MCUs may be different (more or less)
+ * compared to the number of registers of SPI peripheral of STM32Lx or STM32F0x family of MCUs
+ * Please check your device RM
+ */
+
+typedef struct {
+    volatile uint32_t  MODER ;                   /*!< GPIO port mode register,                           Address offset: 0x00 */
+    volatile uint32_t  OTYPER ;                  /*!< GPIO port output type register,                    Address offset: 0x04 */
+    volatile uint32_t  OSPEEDR ;                 /*!< GPIO port output speed register,                   Address offset: 0x08 */
+    volatile uint32_t  PUPDR ;                   /*!< GPIO port pull-up/pull-down register,              Address offset: 0x0C */
+    volatile uint32_t  IDR ;                     /*!< GPIO port input data register,                     Address offset: 0x10 */
+    volatile uint32_t  ODR ;                     /*!< GPIO port output data register,                    Address offset: 0x14 */
+    volatile uint32_t  BSRR ;                    /*!< GPIO port bit set/reset register,                  Address offset: 0x18 */
+    volatile uint32_t  LCKR ;                    /*!< GPIO port configuration lock register,             Address offset: 0x1C */
+    volatile uint32_t  AFR[2] ;                  /*!< AFR[0]: GPIO alternate function low register, AF[1]: GPIO alternate function high register,                Address offset: 0x20 - 0x24 */
+} GPIO_RegDef_t ;
 
 #endif /* _STM32F29XX_H_ */
