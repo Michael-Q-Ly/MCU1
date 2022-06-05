@@ -34,4 +34,22 @@
 #define APB2_PERIPH_BASE_ADDR   0x40010000U
 #define AHB1_PERIPH_BASE_ADDR   0x40020000U
 #define AHB2_PERIPH_BASE_ADDR   0x50000000U
+
+/*
+ * Base addresses of peripherals which are hanging on AHB1 bus
+ * TODO: Complete for all other peripherals
+ */
+
+#define GPIOA_BASE_ADDR         (AHB1_PERIPH_BASE_ADDR + 0x0000)
+#define GPIOB_BASE_ADDR         (AHB1_PERIPH_BASE_ADDR + 0x0400)
+#define GPIOC_BASE_ADDR         (AHB1_PERIPH_BASE_ADDR + 0x0800)
+#define GPIOD_BASE_ADDR         (AHB1_PERIPH_BASE_ADDR + 0x0C00)
+#define GPIOE_BASE_ADDR         (AHB1_PERIPH_BASE_ADDR + 0x1000)
+#define GPIOF_BASE_ADDR         (AHB1_PERIPH_BASE_ADDR + 0x1400)
+#define GPIOG_BASE_ADDR         (AHB1_PERIPH_BASE_ADDR + 0x1800)
+#define GPIOH_BASE_ADDR         (AHB1_PERIPH_BASE_ADDR + 0x1C00)
+#define GPIOI_BASE_ADDR         (AHB1_PERIPH_BASE_ADDR + 0x2000)
+#define GPIOJ_BASE_ADDR         (AHB1_PERIPH_BASE_ADDR + 0x2400)
+#define GPIOK_BASE_ADDR         (AHB1_PERIPH_BASE_ADDR + 0x2800)
+
 #endif /* _STM32F29XX_H_ */
