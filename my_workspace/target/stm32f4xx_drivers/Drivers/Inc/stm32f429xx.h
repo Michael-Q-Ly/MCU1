@@ -109,6 +109,10 @@ typedef struct {
     volatile uint32_t  AFR[2] ;                  /*!< AFR[0]: GPIO alternate function low register, AF[1]: GPIO alternate function high register,                Address offset: 0x20 - 0x24 */
 } GPIO_RegDef_t ;
 
+typedef struct {
+
+} RCC_RegDef_t ;
+
 /*
  * Peripheral definitions (peripheral base addresses typecasted to xxx_RegDef_t)
  */
