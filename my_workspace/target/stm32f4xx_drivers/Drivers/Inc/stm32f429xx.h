@@ -52,4 +52,34 @@
 #define GPIOJ_BASE_ADDR         (AHB1_PERIPH_BASE_ADDR + 0x2400)
 #define GPIOK_BASE_ADDR         (AHB1_PERIPH_BASE_ADDR + 0x2800)
 
+/*
+ * Base addresses of peripherals which are hanging on APB1 bus:
+ *      I2C1, I2C2, I2C3, SPI2, SPI3, USART2, USART3M UART4, UART5
+ * TODO: Complete for all other peripherals
+ */
+
+#define I2C1_BASE_ADDR          (APB1_PERIPH_BASE_ADDR + 0x5400)
+#define I2C2_BASE_ADDR          (APB1_PERIPH_BASE_ADDR + 0x5800)
+#define I2C3_BASE_ADDR          (APB1_PERIPH_BASE_ADDR + 0x5C00)
+
+#define SPI2_BASE_ADDR          (APB1_PERIPH_BASE_ADDR + 0x3800)
+#define SPI3_BASE_ADDR          (APB1_PERIPH_BASE_ADDR + 0x3C00)
+
+#define USART2_BASE_ADDR        (APB1_PERIPH_BASE_ADDR + 0x4400)
+#define USART3_BASE_ADDR        (APB1_PERIPH_BASE_ADDR + 0x4800)
+#define UART4_BASE_ADDR         (APB1_PERIPH_BASE_ADDR + 0x4C00)
+#define UART5_BASE_ADDR         (APB1_PERIPH_BASE_ADDR + 0x5000)
+
+/*
+ * Base addresses of peripherals which are hanging on APB2 bus:
+ *      SPI1, USART1, USART6, EXTI, SYSCFG
+ * TODO: Complete for all other peripherals
+ */
+
+#define EXTI_BASE_ADDR          (APB2_PERIPH_BASE_ADDR + 0X3C00)
+#define SPI1_BASE_ADDR          (APB2_PERIPH_BASE_ADDR + 0X3000)
+#define SYSCFG_BASE_ADDR        (APB2_PERIPH_BASE_ADDR + 0X3800)
+#define USART1_BASE_ADDR        (APB2_PERIPH_BASE_ADDR + 0X1000)
+#define USART6_BASE_ADDR        (APB2_PERIPH_BASE_ADDR + 0X1400)
+
 #endif /* _STM32F29XX_H_ */
