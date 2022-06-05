@@ -25,4 +25,13 @@
 #define SRAM3_SIZE              0x10000U                                /* 64 kB */
 #define SRAM                    SRAM1_BASE_ADDR
 
+/*
+ * AHBx and APBx bus peripheral base addresses
+ */
+
+#define PERIPH_BASE             0x40000000U
+#define APB1_PERIPH_BASE_ADDR   PERIPH_BASE
+#define APB2_PERIPH_BASE_ADDR   0x40010000U
+#define AHB1_PERIPH_BASE_ADDR   0x40020000U
+#define AHB2_PERIPH_BASE_ADDR   0x50000000U
 #endif /* _STM32F29XX_H_ */
