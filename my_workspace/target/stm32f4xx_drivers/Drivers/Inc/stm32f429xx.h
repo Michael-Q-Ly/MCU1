@@ -109,4 +109,20 @@ typedef struct {
     volatile uint32_t  AFR[2] ;                  /*!< AFR[0]: GPIO alternate function low register, AF[1]: GPIO alternate function high register,                Address offset: 0x20 - 0x24 */
 } GPIO_RegDef_t ;
 
+/*
+ * Peripheral definitions (peripheral base addresses typecasted to xxx_RegDef_t)
+ */
+
+#define GPIOA               ((GPIO_RegDef_t*) GPIOA_BASE_ADDR)
+#define GPIOB               ((GPIO_RegDef_t*) GPIOB_BASE_ADDR)
+#define GPIOC               ((GPIO_RegDef_t*) GPIOC_BASE_ADDR)
+#define GPIOD               ((GPIO_RegDef_t*) GPIOD_BASE_ADDR)
+#define GPIOE               ((GPIO_RegDef_t*) GPIOE_BASE_ADDR)
+#define GPIOF               ((GPIO_RegDef_t*) GPIOF_BASE_ADDR)
+#define GPIOG               ((GPIO_RegDef_t*) GPIOG_BASE_ADDR)
+#define GPIOH               ((GPIO_RegDef_t*) GPIOH_BASE_ADDR)
+#define GPIOI               ((GPIO_RegDef_t*) GPIOI_BASE_ADDR)
+#define GPIOJ               ((GPIO_RegDef_t*) GPIOJ_BASE_ADDR)
+#define GPIOK               ((GPIO_RegDef_t*) GPIOK_BASE_ADDR)
+
 #endif /* _STM32F29XX_H_ */
