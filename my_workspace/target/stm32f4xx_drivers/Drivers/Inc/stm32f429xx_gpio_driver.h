@@ -35,4 +35,39 @@ typedef struct {
     GPIO_PinConfig_t GPIO_PinConfig ;                               /*!< This holds GPIO pin configuration settings */
 } GPIO_Handle_t ;
 
+
+
+
+/****************************************************************************************************
+ *                                   APIs supported by this driver                                  *
+ *                For more information about the APIs, check the function definitions               *
+ ***************************************************************************************************/
+
+/*
+ * Peripheral clock setup
+ */
+void GPIO_PeriClockControl(void) ;
+
+/*
+ * Init and De-init
+ */
+
+void GPIO_Init(void) ;
+void GPIO_DeInit(void) ;
+
+/*
+ * Data read and write
+ */
+void GPIO_ReadFromInputPin(void) ;
+void GPIO_ReadFromInputPort(void) ;
+void GPIO_WriteToOutputPin(void) ;
+void GPIO_WriteToOutputPort(void) ;
+void GPIO_ToggleOutputPin(void) ;
+
+/*
+ * IRQ configuration and ISR handling
+ */
+void GPIO_IRQConfig(void) ;
+void GPIO_IRQHandler(void) ;
+
 #endif /* _STM32F429XX_H_ */
