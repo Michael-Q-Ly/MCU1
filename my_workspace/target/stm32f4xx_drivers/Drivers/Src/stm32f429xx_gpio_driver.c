@@ -180,13 +180,16 @@ void GPIO_DeInit(GPIO_RegDef_t *pGPIOx) {
  * @param[in] pGPIOx            Base address of the GPIO port
  * @param[in] pinNumber         GPIO port pin number
  * 
- * @return                      uint8_t
+ * @return                      uint8_t 0 or 1
  * 
- * @note                        none
+ * @note                        To read, the function right-shifts the IDR value over by pinNumber
+ *                              amount of times to the lsb. We then mask with 0x1 and typecast
+ *                              to get the value in the IDR
  */
 uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) {
-
-    return 1 ;
+    uint8_t value ;
+    value = (uint8_t) ((pGPIOx->IDR >> pinNumber) & 0x00000001 ) ;
+    return  value ;
 }
 
 /****************************************************************************************************
@@ -198,12 +201,12 @@ uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) {
  * 
  * @return                      uint16_t
  * 
- * @note                        none
+ * @note                        To read, we need a 16-bit value, so we can just read the entire IDR
  */
 uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx) {
-
-
-    return 1 ;
+    uint16_t value ;
+    value = (uint16_t) (pGPIOx->IDR) ;
+    return  value ;
 }
 
 /****************************************************************************************************
