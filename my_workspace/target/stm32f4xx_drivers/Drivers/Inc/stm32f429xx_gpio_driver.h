@@ -13,4 +13,26 @@
 
 #include "stm32f429xx.h"
 
+/*
+ * This holds the configurable parts of GPIOs
+ */
+typedef struct {
+    uint8_t GPIO_PinNumber ;
+    uint8_t GPIO_PinMode ;
+    uint8_t GPIO_PinSpeed ;
+    uint8_t GPIO_PinPuPdCtrl ;
+    uint8_t GPIO_PinOPType ;
+    uint8_t GPIO_PinAltFunMode ;
+} GPIO_PinConfig_t ;
+
+/*
+ * This is a handle for a GPIO pin
+ */
+
+typedef struct {
+    // Pointer to hold the base address of the GPIO peripheral
+    GPIO_RegDef_t *pGPIOx ;                                         /*!< This holds the base address of the GPIO port to which the pin belongs */
+    GPIO_PinConfig_t GPIO_PinConfig ;                               /*!< This holds GPIO pin configuration settings */
+} GPIO_Handle_t ;
+
 #endif /* _STM32F429XX_H_ */
