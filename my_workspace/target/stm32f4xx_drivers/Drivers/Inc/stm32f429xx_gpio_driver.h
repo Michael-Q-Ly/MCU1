@@ -46,28 +46,31 @@ typedef struct {
 /*
  * Peripheral clock setup
  */
-void GPIO_PeriClockControl(void) ;
+
+void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi) ;
 
 /*
  * Init and De-init
  */
 
-void GPIO_Init(void) ;
-void GPIO_DeInit(void) ;
+void GPIO_Init(GPIO_Handle_t *pGPIO_Handle) ;
+void GPIO_DeInit(GPIO_RegDef_t *pGPIOx) ;
 
 /*
  * Data read and write
  */
-void GPIO_ReadFromInputPin(void) ;
-void GPIO_ReadFromInputPort(void) ;
-void GPIO_WriteToOutputPin(void) ;
-void GPIO_WriteToOutputPort(void) ;
-void GPIO_ToggleOutputPin(void) ;
+
+uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) ;
+uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx) ;
+void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber, uint8_t value) ;
+void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t value) ;
+void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx uint8_t pinNumber) ;
 
 /*
  * IRQ configuration and ISR handling
  */
-void GPIO_IRQConfig(void) ;
-void GPIO_IRQHandler(void) ;
+
+void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi) ;
+void GPIO_IRQHandler(uint8_t pinNumber) ;
 
 #endif /* _STM32F429XX_H_ */
