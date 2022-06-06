@@ -9,6 +9,7 @@
  * 
  */
 #include "stm32f429xx.h"
+#include "stm32f429xx_gpio_driver.h"
 #include <stdint.h>
 
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
