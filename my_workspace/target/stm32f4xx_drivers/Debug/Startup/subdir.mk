@@ -18,3 +18,10 @@ S_DEPS += \
 Startup/%.o: ../Startup/%.s Startup/subdir.mk
 	arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -I"C:/Users/Micha/OneDrive/Documents/Embedded_C/MCU1/my_workspace/target/stm32f4xx_drivers/Inc" -I"C:/Users/Micha/OneDrive/Documents/Embedded_C/MCU1/my_workspace/target/stm32f4xx_drivers/Drivers/Inc" -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@" "$<"
 
+clean: clean-Startup
+
+clean-Startup:
+	-$(RM) ./Startup/startup_stm32f429zitx.d ./Startup/startup_stm32f429zitx.o
+
+.PHONY: clean-Startup
+

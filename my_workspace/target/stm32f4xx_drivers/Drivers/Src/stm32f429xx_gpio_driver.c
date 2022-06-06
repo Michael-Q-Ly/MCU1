@@ -32,7 +32,43 @@
  * @note                none
  */
 void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi) {
+    // If enabled,
+    if (EnorDi == ENABLE) {
+        // Check which GPIO and enable
+        switch ((unsigned long int) pGPIOx) {
+                case GPIOA_BASE_ADDR:       GPIOA_PCLK_EN() ;       break ;
+                case GPIOB_BASE_ADDR:       GPIOB_PCLK_EN() ;       break ;
+                case GPIOC_BASE_ADDR:       GPIOC_PCLK_EN() ;       break ;
+                case GPIOD_BASE_ADDR:       GPIOD_PCLK_EN() ;       break ;
+                case GPIOE_BASE_ADDR:       GPIOE_PCLK_EN() ;       break ;
+                case GPIOF_BASE_ADDR:       GPIOF_PCLK_EN() ;       break ;
+                case GPIOG_BASE_ADDR:       GPIOG_PCLK_EN() ;       break ;
+                case GPIOH_BASE_ADDR:       GPIOH_PCLK_EN() ;       break ;
+                case GPIOI_BASE_ADDR:       GPIOI_PCLK_EN() ;       break ;
+                case GPIOJ_BASE_ADDR:       GPIOJ_PCLK_EN() ;       break ;
+                case GPIOK_BASE_ADDR:       GPIOK_PCLK_EN() ;       break ;
+                default:                    return ;                break ;         // TODO: return error or cause a user fault
+        }
 
+    }
+    else {
+        // Disable the GPIO otherwise
+        switch ((unsigned long int) pGPIOx) {
+                case GPIOA_BASE_ADDR:       GPIOA_PCLK_DI() ;       break ;
+                case GPIOB_BASE_ADDR:       GPIOB_PCLK_DI() ;       break ;
+                case GPIOC_BASE_ADDR:       GPIOC_PCLK_DI() ;       break ;
+                case GPIOD_BASE_ADDR:       GPIOD_PCLK_DI() ;       break ;
+                case GPIOE_BASE_ADDR:       GPIOE_PCLK_DI() ;       break ;
+                case GPIOF_BASE_ADDR:       GPIOF_PCLK_DI() ;       break ;
+                case GPIOG_BASE_ADDR:       GPIOG_PCLK_DI() ;       break ;
+                case GPIOH_BASE_ADDR:       GPIOH_PCLK_DI() ;       break ;
+                case GPIOI_BASE_ADDR:       GPIOI_PCLK_DI() ;       break ;
+                case GPIOJ_BASE_ADDR:       GPIOJ_PCLK_DI() ;       break ;
+                case GPIOK_BASE_ADDR:       GPIOK_PCLK_DI() ;       break ;
+                default:                    return ;                break ;         // TODO: return error or cause a user fault
+        }
+        return ;
+    }
 }
 
 /*
@@ -41,6 +77,7 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi) {
 
 /****************************************************************************************************
  * @fn                          GPIO_Init
+ * 
  * @brief                       Initializes operation of a GPIO
  * 
  * @param[in] pGPIO_Handle      Struct containing GPIO number and GPIO config settings
@@ -55,6 +92,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIO_Handle) {
 
 /****************************************************************************************************
  * @fn                          GPIO_DeInit
+ * 
  * @brief                       Deinitializes operation of a GPIO pin
  * 
  * @param[in] pGPIOx            Base address of a GPIO
@@ -85,6 +123,7 @@ void GPIO_DeInit(GPIO_RegDef_t *pGPIOx) {
  */
 uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) {
 
+    return 1 ;
 }
 
 /****************************************************************************************************
@@ -100,6 +139,8 @@ uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) {
  */
 uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx) {
 
+
+    return 1 ;
 }
 
 /****************************************************************************************************
