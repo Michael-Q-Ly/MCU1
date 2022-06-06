@@ -86,14 +86,35 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi) {
  */
 void GPIO_Init(GPIO_Handle_t *pGPIO_Handle) {
     // 1. Configure the mode of GPIO pin
+    uint32_t temp = 0 ;                                                             // Temporary register
+    if (pGPIO_Handle->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG) {
+        // The non-interrupt mode
+        temp = (pGPIO_Handle->GPIO_PinConfig.GPIO_PinMode << (2 * pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber)) ;
+        pGPIO_Handle->pGPIOx->MODER = temp ;
+    }
+    else {
+        // TODO: later; this is for interrupts
+    }
 
     // 2. Configure the speed
+    temp = 0 ;
+    temp = pGPIO_Handle->GPIO_PinConfig.GPIO_PinSpeed << (2 * pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber) ;
+    pGPIO_Handle->pGPIOx->OSPEEDR |= temp ;
 
     // 3. Configure the PUPD settings
+    temp = 0 ;
+    temp = pGPIO_Handle->GPIO_PinConfig.GPIO_PinPuPdCtrl << (2 * pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber) ;
+    pGPIO_Handle->pGPIOx->PUPDR |= temp ;
 
     // 4. Configure the op type
+    temp = 0 ;
+    temp = pGPIO_Handle->GPIO_PinConfig.GPIO_PinPuPdCtrl << pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber ;
+    pGPIO_Handle->pGPIOx->OTYPER |= temp ;
 
     // 5. Configure the alt functionality
+    if (pGPIO_Handle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_ALT_FUN) {
+        // Configure the alt function registers
+    }
 }
 
 /****************************************************************************************************
