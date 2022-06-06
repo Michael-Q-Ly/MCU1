@@ -341,6 +341,6 @@ typedef struct {
 #define GPIOH_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT7) ;   (RCC->AHB1RSTR &= ~BIT7) ;  } while(0)
 #define GPIOI_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT8) ;   (RCC->AHB1RSTR &= ~BIT8) ;  } while(0)
 #define GPIOJ_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT9) ;   (RCC->AHB1RSTR &= ~BIT9) ;  } while(0)
-#define GPIOK_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT10) ;  (RCC->AHB1RSTR &= ~BIT10) ;} while(0)
+#define GPIOK_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT10) ;  (RCC->AHB1RSTR &= ~BIT10) ; } while(0)
 
 #endif /* _STM32F29XX_H_ */
