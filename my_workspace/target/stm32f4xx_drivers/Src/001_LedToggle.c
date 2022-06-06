@@ -16,6 +16,10 @@
 void delay(void) ;
 
 int main(void) {
+    GPIO_PeriClockControl(GPIOG, ENABLE) ;
+    uint32_t volatile *pAhb1ClkCtrlReg = (uint32_t*)(0x40023830) ;
+    *pAhb1ClkCtrlReg |= BIT6 ;
+#ifdef later
     GPIO_Handle_t GpioLed ;
 
     GpioLed.pGPIOx = GPIOG ;
@@ -32,6 +36,7 @@ int main(void) {
         GPIO_ToggleOutputPin(GPIOG, GPIO_PIN_NO_13) ;
         delay() ;
     }
+#endif /* later */
 
     return 0 ;
 }

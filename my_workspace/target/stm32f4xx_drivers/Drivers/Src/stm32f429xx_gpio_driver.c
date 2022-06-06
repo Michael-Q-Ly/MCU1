@@ -32,6 +32,12 @@
  * @note                none
  */
 void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi) {
+    if (EnorDi == ENABLE) {
+        if (pGPIOx == GPIOG) {
+            GPIOG_PCLK_EN() ;
+        }
+    }
+#ifdef later
     // If enabled,
     if (EnorDi == ENABLE) {
         // Check which GPIO and enable
@@ -67,6 +73,7 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi) {
                 default:                    return ;                break ;         // TODO: return error or cause a user fault
         }
     }
+#endif /* later */
 }
 
 /*
