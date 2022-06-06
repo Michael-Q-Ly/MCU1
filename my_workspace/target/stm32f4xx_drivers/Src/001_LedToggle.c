@@ -29,7 +29,7 @@ int main(void) {
     GPIO_Init(&GpioLed) ;
 
     while (1) {
-        GPIO_ToggleOutputPin(GpioLed.pGPIOx, GpioLed.GPIO_PinConfig.GPIO_PinNumber) ;
+        GPIO_ToggleOutputPin(GPIOG, GPIO_PIN_NO_13) ;
         delay() ;
     }
 
