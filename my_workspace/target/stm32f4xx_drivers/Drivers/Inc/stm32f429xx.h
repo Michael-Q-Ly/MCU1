@@ -87,7 +87,6 @@
 
 /*
  * Base addresses of peripherals which are hanging on AHB1 bus
- * TODO: Complete for all other peripherals
  */
 
 #define GPIOA_BASE_ADDR         (AHB1_PERIPH_BASE_ADDR + 0x0000)

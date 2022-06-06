@@ -49,7 +49,6 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi) {
                 case GPIOK_BASE_ADDR:       GPIOK_PCLK_EN() ;       break ;
                 default:                    return ;                break ;         // TODO: return error or cause a user fault
         }
-
     }
     else {
         // Disable the GPIO otherwise
@@ -67,7 +66,6 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi) {
                 case GPIOK_BASE_ADDR:       GPIOK_PCLK_DI() ;       break ;
                 default:                    return ;                break ;         // TODO: return error or cause a user fault
         }
-        return ;
     }
 }
 
@@ -87,7 +85,15 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi) {
  * @note                        none
  */
 void GPIO_Init(GPIO_Handle_t *pGPIO_Handle) {
+    // 1. Configure the mode of GPIO pin
 
+    // 2. Configure the speed
+
+    // 3. Configure the PUPD settings
+
+    // 4. Configure the op type
+
+    // 5. Configure the alt functionality
 }
 
 /****************************************************************************************************
