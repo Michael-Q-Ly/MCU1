@@ -16,12 +16,9 @@
 void delay(void) ;
 
 int main(void) {
-    GPIO_PeriClockControl(GPIOG, ENABLE) ;
-    uint32_t volatile *pAhb1ClkCtrlReg = (uint32_t*)(0x40023830) ;
-    *pAhb1ClkCtrlReg |= BIT6 ;
-#ifdef later
     GPIO_Handle_t GpioLed ;
 
+    // Configure the LED to use PG13 with no PUPD with fast output speed
     GpioLed.pGPIOx = GPIOG ;
     GpioLed.GPIO_PinConfig.GPIO_PinNumber   = GPIO_PIN_NO_13 ;
     GpioLed.GPIO_PinConfig.GPIO_PinMode     = GPIO_MODE_OUTPUT ;
@@ -33,14 +30,23 @@ int main(void) {
     GPIO_Init(&GpioLed) ;
 
     while (1) {
-        GPIO_ToggleOutputPin(GPIOG, GPIO_PIN_NO_13) ;
+        GPIO_ToggleOutputPin(GpioLed.pGPIOx, GpioLed.GPIO_PinConfig.GPIO_PinNumber) ;
         delay() ;
     }
-#endif /* later */
 
     return 0 ;
 }
 
+/****************************************************************************************************
+ * @fn          delay
+ * 
+ * @brief       Software delay
+ * 
+ * @return      none
+ * 
+ * @note        none
+ * 
+ */
 void delay(void) {
     for (uint32_t i = 0 ; i < 500000 ; i++) ;
 }
