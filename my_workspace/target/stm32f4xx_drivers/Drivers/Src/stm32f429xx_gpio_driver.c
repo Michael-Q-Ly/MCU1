@@ -148,11 +148,25 @@ void GPIO_Init(GPIO_Handle_t *pGPIO_Handle) {
  * 
  * @return                      none
  * 
- * @note                        none
+ * @note                        Refer to AHB1 peripheral reset register in the RM
  */
 void GPIO_DeInit(GPIO_RegDef_t *pGPIOx) {
-
-} 
+        // Check which GPIO to deinitialize
+        switch ((unsigned long int) pGPIOx) {
+                case GPIOA_BASE_ADDR:       GPIOA_REG_RESET() ;       break ;
+                case GPIOB_BASE_ADDR:       GPIOB_REG_RESET() ;       break ;
+                case GPIOC_BASE_ADDR:       GPIOC_REG_RESET() ;       break ;
+                case GPIOD_BASE_ADDR:       GPIOD_REG_RESET() ;       break ;
+                case GPIOE_BASE_ADDR:       GPIOE_REG_RESET() ;       break ;
+                case GPIOF_BASE_ADDR:       GPIOF_REG_RESET() ;       break ;
+                case GPIOG_BASE_ADDR:       GPIOG_REG_RESET() ;       break ;
+                case GPIOH_BASE_ADDR:       GPIOH_REG_RESET() ;       break ;
+                case GPIOI_BASE_ADDR:       GPIOI_REG_RESET() ;       break ;
+                case GPIOJ_BASE_ADDR:       GPIOJ_REG_RESET() ;       break ;
+                case GPIOK_BASE_ADDR:       GPIOK_REG_RESET() ;       break ;
+                default:                    return ;                break ;         // TODO: return error or cause a user fault
+        }
+}
 
 /*
  * Data read and write
