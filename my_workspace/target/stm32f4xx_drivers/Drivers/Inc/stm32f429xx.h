@@ -14,6 +14,43 @@
 #include <stdint.h>
 
 /*
+ * Bit shifts
+ */
+
+#define BIT0                    (0x1U << 0)
+#define BIT1                    (0x1U << 1)
+#define BIT2                    (0x1U << 2)
+#define BIT3                    (0x1U << 3)
+#define BIT4                    (0x1U << 4)
+#define BIT5                    (0x1U << 5)
+#define BIT6                    (0x1U << 6)
+#define BIT7                    (0x1U << 7)
+#define BIT8                    (0x1U << 8)
+#define BIT9                    (0x1U << 9)
+#define BIT10                   (0x1U << 10)
+#define BIT11                   (0x1U << 11)
+#define BIT12                   (0x1U << 12)
+#define BIT13                   (0x1U << 13)
+#define BIT14                   (0x1U << 14)
+#define BIT15                   (0x1U << 15)
+#define BIT16                   (0x1U << 16)
+#define BIT17                   (0x1U << 17)
+#define BIT18                   (0x1U << 18)
+#define BIT19                   (0x1U << 19)
+#define BIT20                   (0x1U << 20)
+#define BIT21                   (0x1U << 21)
+#define BIT22                   (0x1U << 22)
+#define BIT23                   (0x1U << 23)
+#define BIT24                   (0x1U << 24)
+#define BIT25                   (0x1U << 25)
+#define BIT26                   (0x1U << 26)
+#define BIT27                   (0x1U << 27)
+#define BIT28                   (0x1U << 28)
+#define BIT29                   (0x1U << 29)
+#define BIT30                   (0x1U << 30)
+#define BIT31                   (0x1U << 31)
+
+/*
  * Base addresses of FLASH and SRAM memories
  */
 
@@ -27,8 +64,8 @@
 #define SRAM3_SIZE              0x10000U                                /* 64 kB */
 #define SRAM                    SRAM1_BASE_ADDR
 
-/*
- * AHBx and APBx bus peripheral base addresses
+ /*
+  * AHBx and APBx bus peripheral base addresses
  */
 
 #define PERIPH_BASE             0x40000000U
@@ -62,7 +99,7 @@
 
 /*
  * Base addresses of peripherals which are hanging on APB1 bus:
- *      I2C1, I2C2, I2C3, SPI2, SPI3, USART2, USART3M UART4, UART5
+ *      I2C1, I2C2, I2C3, SPI2, SPI3, USART2, USART3, UART4, UART5
  * TODO: Complete for all other peripherals
  */
 
@@ -158,18 +195,126 @@ typedef struct {
  * Peripheral definitions (peripheral base addresses typecasted to xxx_RegDef_t)
  */
 
-#define GPIOA               ((GPIO_RegDef_t*) GPIOA_BASE_ADDR)
-#define GPIOB               ((GPIO_RegDef_t*) GPIOB_BASE_ADDR)
-#define GPIOC               ((GPIO_RegDef_t*) GPIOC_BASE_ADDR)
-#define GPIOD               ((GPIO_RegDef_t*) GPIOD_BASE_ADDR)
-#define GPIOE               ((GPIO_RegDef_t*) GPIOE_BASE_ADDR)
-#define GPIOF               ((GPIO_RegDef_t*) GPIOF_BASE_ADDR)
-#define GPIOG               ((GPIO_RegDef_t*) GPIOG_BASE_ADDR)
-#define GPIOH               ((GPIO_RegDef_t*) GPIOH_BASE_ADDR)
-#define GPIOI               ((GPIO_RegDef_t*) GPIOI_BASE_ADDR)
-#define GPIOJ               ((GPIO_RegDef_t*) GPIOJ_BASE_ADDR)
-#define GPIOK               ((GPIO_RegDef_t*) GPIOK_BASE_ADDR)
+#define GPIOA                   ((GPIO_RegDef_t*) GPIOA_BASE_ADDR)
+#define GPIOB                   ((GPIO_RegDef_t*) GPIOB_BASE_ADDR)
+#define GPIOC                   ((GPIO_RegDef_t*) GPIOC_BASE_ADDR)
+#define GPIOD                   ((GPIO_RegDef_t*) GPIOD_BASE_ADDR)
+#define GPIOE                   ((GPIO_RegDef_t*) GPIOE_BASE_ADDR)
+#define GPIOF                   ((GPIO_RegDef_t*) GPIOF_BASE_ADDR)
+#define GPIOG                   ((GPIO_RegDef_t*) GPIOG_BASE_ADDR)
+#define GPIOH                   ((GPIO_RegDef_t*) GPIOH_BASE_ADDR)
+#define GPIOI                   ((GPIO_RegDef_t*) GPIOI_BASE_ADDR)
+#define GPIOJ                   ((GPIO_RegDef_t*) GPIOJ_BASE_ADDR)
+#define GPIOK                   ((GPIO_RegDef_t*) GPIOK_BASE_ADDR)
 
-#define RCC                 ((RCC_RegDef_t*) RCC_BASE_ADDR)
+#define RCC                     ((RCC_RegDef_t*) RCC_BASE_ADDR)
+
+
+/*
+ * Clock enable macros for GPIOx peripherals
+ */
+
+#define GPIOA_PCLK_EN()         (RCC->AHB1ENR |= BIT0)
+#define GPIOB_PCLK_EN()         (RCC->AHB1ENR |= BIT1)
+#define GPIOC_PCLK_EN()         (RCC->AHB1ENR |= BIT2)
+#define GPIOD_PCLK_EN()         (RCC->AHB1ENR |= BIT3)
+#define GPIOE_PCLK_EN()         (RCC->AHB1ENR |= BIT4)
+#define GPIOF_PCLK_EN()         (RCC->AHB1ENR |= BIT5)
+#define GPIOG_PCLK_EN()         (RCC->AHB1ENR |= BIT6)
+#define GPIOH_PCLK_EN()         (RCC->AHB1ENR |= BIT7)
+#define GPIOI_PCLK_EN()         (RCC->AHB1ENR |= BIT8)
+#define GPIOJ_PCLK_EN()         (RCC->AHB1ENR |= BIT9)
+#define GPIOK_PCLK_EN()         (RCC->AHB1ENR |= BIT10)
+
+/*
+ * Clock enable macros for I2Cx peripherals
+ */
+
+// // TODO: Finish other I2C peripherals
+#define I2C1_PCLK_EN()          (RCC->APB1ENR |= BIT21)
+#define I2C2_PCLK_EN()          (RCC->APB1ENR |= BIT22)
+#define I2C3_PCLK_EN()          (RCC->APB1ENR |= BIT23)
+
+/*
+ * Clock enable macros for SPIx peripherals
+ */
+
+// // TODO: Finish other SPI peripherals
+#define SPI1_PCLK_EN()          (RCC->APB2ENR |= BIT12)
+#define SPI2_PCLK_EN()          (RCC->APB1ENR |= BIT14)
+#define SPI3_PCLK_EN()          (RCC->APB1ENR |= BIT15)
+
+/*
+ *  Clock enable macros for USARTx peripherals
+ */
+
+// // TODO: Finish other USART peripherals
+#define USART1_PCLK_EN()        (RCC->APB2ENR |= BIT4)
+#define USART2_PCLK_EN()        (RCC->APB1ENR |= BIT17)
+#define USART3_PCLK_EN()        (RCC->APB1ENR |= BIT18)
+#define UART4_PCLK_EN()         (RCC->APB1ENR |= BIT19)
+#define UART5_PCLK_EN()         (RCC->APB1ENR |= BIT20)
+#define USART6_PCLK_EN()        (RCC->APB2ENR |= BIT5)
+
+/*
+ * Clock enable macros for SYSCFG peripheral
+ */
+
+// // TODO: SYSCFG macro
+#define SYSCFG_PCLK_EN()        (RCC->APB2ENR |= BIT14)
+
+/*
+ * Clock Disable macros for GPIOx peripherals
+ */
+
+// // TODO: Finish GPIO macros for disable
+#define GPIOA_PCLK_DI()         (RCC->AHB1ENR &= ~BIT0)
+#define GPIOB_PCLK_DI()         (RCC->AHB1ENR &= ~BIT1)
+#define GPIOC_PCLK_DI()         (RCC->AHB1ENR &= ~BIT2)
+#define GPIOD_PCLK_DI()         (RCC->AHB1ENR &= ~BIT3)
+#define GPIOE_PCLK_DI()         (RCC->AHB1ENR &= ~BIT4)
+#define GPIOF_PCLK_DI()         (RCC->AHB1ENR &= ~BIT5)
+#define GPIOG_PCLK_DI()         (RCC->AHB1ENR &= ~BIT6)
+#define GPIOH_PCLK_DI()         (RCC->AHB1ENR &= ~BIT7)
+#define GPIOI_PCLK_DI()         (RCC->AHB1ENR &= ~BIT8)
+#define GPIOJ_PCLK_DI()         (RCC->AHB1ENR &= ~BIT9)
+#define GPIOK_PCLK_DI()         (RCC->AHB1ENR &= ~BIT10)
+
+/*
+ * Clock disable macros for I2Cx peripherals
+ */
+
+// // TODO: Finish other I2C peripherals for disable
+#define I2C1_PCLK_DI()          (RCC->APB1ENR &= ~BIT21)
+#define I2C2_PCLK_DI()          (RCC->APB1ENR &= ~BIT22)
+#define I2C3_PCLK_DI()          (RCC->APB1ENR &= ~BIT23)
+
+/*
+ * Clock disable macros for SPIx peripherals
+ */
+
+// // TODO: Finish other SPI peripherals for disable
+#define SPI1_PCLK_DI()          (RCC->APB2ENR &= ~BIT12)
+#define SPI2_PCLK_DI()          (RCC->APB1ENR &= ~BIT14)
+#define SPI3_PCLK_DI()          (RCC->APB1ENR &= ~BIT15)
+
+/*
+ *  Clock disable macros for USARTx peripherals
+ */
+
+// // TODO: Finish other USART peripherals for disable
+#define USART1_PCLK_DI()        (RCC->APB2ENR &= ~BIT4)
+#define USART2_PCLK_DI()        (RCC->APB1ENR &= ~BIT17)
+#define USART3_PCLK_DI()        (RCC->APB1ENR &= ~BIT18)
+#define UART4_PCLK_DI()         (RCC->APB1ENR &= ~BIT19)
+#define UART5_PCLK_DI()         (RCC->APB1ENR &= ~BIT20)
+#define USART6_PCLK_DI()        (RCC->APB2ENR &= ~BIT5)
+
+/*
+ * Clock disable macros for SYSCFG peripheral
+ */
+
+// // TODO: SYSCFG macro
+#define SYSCFG_PCLK_DI()        (RCC->APB2ENR &= ~BIT14)
 
 #endif /* _STM32F29XX_H_ */
