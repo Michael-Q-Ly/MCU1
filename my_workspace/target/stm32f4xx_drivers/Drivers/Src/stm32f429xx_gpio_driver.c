@@ -223,7 +223,14 @@ uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx) {
  * @note                        none
  */
 void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber, uint8_t value) {
-
+    if (value == GPIO_PIN_SET) {
+        // Write 1 to the ODR at the bit field corresponding to the pin number
+        pGPIOx->ODR |= value << pinNumber ;
+    }
+    else {
+        // Write 0
+        pGPIOx->ODR &= ~(value << pinNumber) ;
+    }
 }
 
 /****************************************************************************************************
@@ -239,7 +246,8 @@ void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber, uint8_t val
  * @note                        none
  */
 void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t value) {
-
+    // Since we are writing to the whole port, we just copy the value into the ODR
+    pGPIOx->ODR = value ;
 }
 
 /****************************************************************************************************
