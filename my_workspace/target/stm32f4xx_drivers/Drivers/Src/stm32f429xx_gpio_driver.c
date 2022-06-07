@@ -304,7 +304,7 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) {
  */
 
 /****************************************************************************************************
- * @fn                          GPIO_IRQConfig
+ * @fn                          GPIO_IRQInterruptConfig
  * 
  * @brief                       Configures the IRQ of a GPIO
  * 
@@ -320,7 +320,7 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) {
  *                              but inside the ISER1 register, it is bit zero. Thus we use mod
  *                              for registers after ISER0 and ICER0
  */
-void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi) {
+void GPIO_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi) {
     // If enabled,
     if (EnorDi == ENABLE) {
         // Check the IRQ number and set the corresponding ISE register
@@ -337,6 +337,7 @@ void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi) {
             *NVIC_ISER2 |= (1 << (IRQNumber % (2 * SIZE_OF_ISERx_REG))) ;
         }
     }
+    // Else if disabled,
     else {
         // Check the IRQ number and clear the corresponding ISE register
         if (IRQNumber <= END_BIT_OF_ICER0) {
@@ -352,6 +353,22 @@ void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi) {
             *NVIC_ICER2 |= (1 << (IRQNumber % (2 * SIZE_OF_ICERx_REG))) ;
         }
     }
+}
+
+/****************************************************************************************************
+ * @fn                          GPIO_IRQPriorityConfig
+ * 
+ * @brief                       Configures the IRQ priority of a GPIO
+ * 
+ * @param[in] IRQNumber         IRQ number from NVIC table of ARM Cortex M4
+ * @param[in] IRQPriority       IRQ priority from NVIC table of ARM Cortex M4
+ * 
+ * @return                      none
+ * 
+ * @note                        none
+ */
+void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority) {
+
 }
 
 /****************************************************************************************************
