@@ -105,6 +105,20 @@ void GPIO_Init(GPIO_Handle_t *pGPIO_Handle) {
     }
     else {
         // TODO: later; this is for interrupt mode
+        switch (pGPIO_Handle->GPIO_PinConfig.GPIO_PinMode) {
+            case GPIO_MODE_IT_TF:
+                // 1. Configure the FTSR
+            case GPIO_MODE_IT_TR:
+                // 1. Configure the RTSR
+            case GPIO_MODE_IT_TRF:
+                // 1. Configure the FTSR and RTSR
+            default:
+                return ;
+        }
+
+        // 2. Configure the GPIO port selection in SYSCFG_EXTICR
+
+        // 3. Enable the EXTI interrupt delivery using IMR
     }
 
     // 2. Configure the speed

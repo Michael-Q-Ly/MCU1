@@ -150,6 +150,10 @@
  * Please check your device RM
  */
 
+/**
+ * @brief Peripheral register definition structure for GPIOs
+ * 
+ */
 typedef struct {
     volatile uint32_t  MODER ;                  /*!< GPIO port mode register,                                       Address offset: 0x00 */
     volatile uint32_t  OTYPER ;                 /*!< GPIO port output type register,                                Address offset: 0x04 */
@@ -162,6 +166,10 @@ typedef struct {
     volatile uint32_t  AFR[2] ;                 /*!< AFR[0]: GPIO alternate function low register, AF[1]: GPIO alternate function high register,                Address offset: 0x20 - 0x24 */
 } GPIO_RegDef_t ;
 
+/**
+ * @brief Peripheral register definition structure for RCC
+ * 
+ */
 typedef struct {
     volatile uint32_t CR ;                      /*!< RCC clock control register                                     Address offset: 0x00 */
     volatile uint32_t PLLCFGR ;                 /*!< RCC PLL configuration register                                 Address offset: 0x04 */
@@ -202,6 +210,18 @@ typedef struct {
 } RCC_RegDef_t ;
 
 /*
+ * Peripheral register definition structure for EXTI
+ */
+typedef struct {
+    volatile uint32_t IMR ;                     /*!< Interrupt mask register                                        Address offset: 0x00 */
+    volatile uint32_t EMR ;                     /*!< Event mask register                                            Address offset: 0x04 */
+    volatile uint32_t RTSR ;                    /*!< Rising trigger selection register                              Address offset: 0x08 */
+    volatile uint32_t FTSR ;                    /*!< Falling trigger selection register                             Address offset: 0x0C */
+    volatile uint32_t SWIER ;                   /*!< Software interrupt event register                              Address offset: 0x10 */
+    volatile uint32_t PR ;                      /*!< Pending register                                               Address offset: 0x14 */
+} EXTI_RegDef_t ;
+
+/*
  * Peripheral definitions (peripheral base addresses typecasted to xxx_RegDef_t)
  */
 
@@ -219,6 +239,7 @@ typedef struct {
 
 #define RCC                     ((RCC_RegDef_t*) RCC_BASE_ADDR)
 
+#define EXTI                    ((EXTI_RegDef_t*) EXTI_BASE_ADDR)
 
 /*
  * Clock enable macros for GPIOx peripherals

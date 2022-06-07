@@ -66,9 +66,9 @@ typedef struct {
 #define GPIO_MODE_OUTPUT        1                                   /*!< GPIO output mode */
 #define GPIO_MODE_ALT_FUN       2                                   /*!< GPIO alternate function mode */
 #define GPIO_MODE_ANALOG        3                                   /*!< GPIO analog mode */
-#define GPIO_MODE_IP_TF         4                                   /*!< GPIO input falling edge trigger */
-#define GPIO_MODE_IP_TR         5                                   /*!< GPIO input rising edge trigger */
-#define GPIO_MODE_IP_TRF        6                                   /*!< GPIO input rising and falling edge trigger */
+#define GPIO_MODE_IT_TF         4                                   /*!< GPIO input falling edge trigger */
+#define GPIO_MODE_IT_TR         5                                   /*!< GPIO input rising edge trigger */
+#define GPIO_MODE_IT_TRF        6                                   /*!< GPIO input rising and falling edge trigger */
 
 /*
  * @GPIO_OP_TYPE
