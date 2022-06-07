@@ -314,10 +314,44 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) {
  * 
  * @return                      none
  * 
- * @note                        none
+ * @note                        We only need up to ISER2 because the STM32F429ZI contains only
+ *                              90 interrupt positions in its vector table
+ *                              Additionally, we use mod operator because ISER1 starts at "bit 32,""
+ *                              but inside the ISER1 register, it is bit zero. Thus we use mod
+ *                              for registers after ISER0 and ICER0
  */
 void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi) {
-
+    // If enabled,
+    if (EnorDi == ENABLE) {
+        // Check the IRQ number and set the corresponding ISE register
+        if (IRQNumber <= END_BIT_OF_ISER0) {
+            // Program ISER0 register
+            *NVIC_ISER0 |= (1 << IRQNumber) ;
+        }
+        else if ((IRQNumber >= START_BIT_OF_ISER1) && (IRQNumber <= END_BIT_OF_ISER1)) {
+            // Program ISER1 register
+            *NVIC_ISER1 |= (1 << (IRQNumber % (1 * SIZE_OF_ISERx_REG))) ;
+        }
+        else if ((IRQNumber >= START_BIT_OF_ISER2) && (IRQNumber <= END_BIT_OF_ISER2)) {
+            // Program ISER2 register
+            *NVIC_ISER2 |= (1 << (IRQNumber % (2 * SIZE_OF_ISERx_REG))) ;
+        }
+    }
+    else {
+        // Check the IRQ number and clear the corresponding ISE register
+        if (IRQNumber <= END_BIT_OF_ICER0) {
+            // Program ICER0 register
+            *NVIC_ICER0 |= (1 << IRQNumber) ;
+        }
+        else if ((IRQNumber >= START_BIT_OF_ICER1) && (IRQNumber <= END_BIT_OF_ICER1)) {
+            // Program ICER1 register
+            *NVIC_ICER1 |= (1 << (IRQNumber % (1 * SIZE_OF_ICERx_REG))) ;
+        }
+        else if ((IRQNumber >= START_BIT_OF_ICER2) && (IRQNumber <= END_BIT_OF_ICER2)) {
+            // Program ICER2 register
+            *NVIC_ICER2 |= (1 << (IRQNumber % (2 * SIZE_OF_ICERx_REG))) ;
+        }
+    }
 }
 
 /****************************************************************************************************

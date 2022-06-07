@@ -13,6 +13,33 @@
 
 #include <stdint.h>
 
+/************************************ START: Processor-Specific Details ************************************/
+
+/*
+ * ARM Cortex Mx processor NVIC ISERx register addresses
+ */
+
+#define NVIC_ISER0              ((volatile uint32_t*) 0xE000E100)
+#define NVIC_ISER1              ((volatile uint32_t*) 0xE000E104)
+#define NVIC_ISER2              ((volatile uint32_t*) 0xE000E108)
+#define NVIC_ISER3              ((volatile uint32_t*) 0xE000E10C)
+#define NVIC_ISER4              ((volatile uint32_t*) 0xE000E110)
+#define NVIC_ISER5              ((volatile uint32_t*) 0xE000E114)
+#define NVIC_ISER6              ((volatile uint32_t*) 0xE000E118)
+#define NVIC_ISER7              ((volatile uint32_t*) 0xE000E11C)
+
+/*
+ * ARM Cortex Mx processor NVIC ICERx register addresses
+ */
+
+#define NVIC_ICER0              ((volatile uint32_t*) 0xE000E180)
+#define NVIC_ICER1              ((volatile uint32_t*) 0xE000E184)
+#define NVIC_ICER2              ((volatile uint32_t*) 0xE000E188)
+#define NVIC_ICER3              ((volatile uint32_t*) 0xE000E18C)
+#define NVIC_ICER4              ((volatile uint32_t*) 0xE000E180)
+#define NVIC_ICER5              ((volatile uint32_t*) 0xE000E184)
+#define NVIC_ICER6              ((volatile uint32_t*) 0xE000E188)
+#define NVIC_ICER7              ((volatile uint32_t*) 0xE000E18C)
 
 /*
  * Base addresses of FLASH and SRAM memories
@@ -406,5 +433,54 @@ typedef struct {
 #define IRQ_NO_EXTI4                10
 #define IRQ_NO_EXTI9_5              23
 #define IRQ_NO_EXTI5_10             40
+
+/*
+ * ISER0-ISER7 bit boundaries
+ */
+
+#define SIZE_OF_ISERx_REG           32
+#define START_BIT_OF_ISER           0
+
+#define START_BIT_OF_ISER0          START_BIT_OF_ISER
+#define END_BIT_OF_ISER0            (START_BIT_OF_ISER0 + SIZE_OF_ISERx_REG - 1)
+#define START_BIT_OF_ISER1          (START_BIT_OF_ISER + (1 * SIZE_OF_ISERx_REG))
+#define END_BIT_OF_ISER1            (START_BIT_OF_ISER1 + SIZE_OF_ISERx_REG - 1)
+#define START_BIT_OF_ISER2          (START_BIT_OF_ISER + (3 * SIZE_OF_ISERx_REG))
+#define END_BIT_OF_ISER2            (START_BIT_OF_ISER2 + SIZE_OF_ISERx_REG - 1)
+#define START_BIT_OF_ISER3          (START_BIT_OF_ISER + (4 * SIZE_OF_ISERx_REG))
+#define END_BIT_OF_ISER3            (START_BIT_OF_ISER3 + SIZE_OF_ISERx_REG - 1)
+#define START_BIT_OF_ISER4          (START_BIT_OF_ISER + (5 * SIZE_OF_ISERx_REG))
+#define END_BIT_OF_ISER4            (START_BIT_OF_ISER4 + SIZE_OF_ISERx_REG - 1)
+#define START_BIT_OF_ISER5          (START_BIT_OF_ISER + (6 * SIZE_OF_ISERx_REG))
+#define END_BIT_OF_ISER5            (START_BIT_OF_ISER5 + SIZE_OF_ISERx_REG - 1)
+#define START_BIT_OF_ISER6          (START_BIT_OF_ISER + (7 * SIZE_OF_ISERx_REG))
+#define END_BIT_OF_ISER6            (START_BIT_OF_ISER6 + SIZE_OF_ISERx_REG - 1)
+#define START_BIT_OF_ISER7          (START_BIT_OF_ISER + (8 * SIZE_OF_ISERx_REG))
+#define END_BIT_OF_ISER7            (START_BIT_OF_ISER7 + SIZE_OF_ISERx_REG - 1)
+
+/*
+ * ICER0-ICER7 bit boundaries
+ */
+
+#define SIZE_OF_ICERx_REG           32
+#define START_BIT_OF_ICER           0
+
+#define START_BIT_OF_ICER0          START_BIT_OF_ICER
+#define END_BIT_OF_ICER0            (START_BIT_OF_ICER0 + SIZE_OF_ICERx_REG - 1)
+#define START_BIT_OF_ICER1          (START_BIT_OF_ICER + (1 * SIZE_OF_ICERx_REG))
+#define END_BIT_OF_ICER1            (START_BIT_OF_ICER1 + SIZE_OF_ICERx_REG - 1)
+#define START_BIT_OF_ICER2          (START_BIT_OF_ICER + (3 * SIZE_OF_ICERx_REG))
+#define END_BIT_OF_ICER2            (START_BIT_OF_ICER2 + SIZE_OF_ICERx_REG - 1)
+#define START_BIT_OF_ICER3          (START_BIT_OF_ICER + (4 * SIZE_OF_ICERx_REG))
+#define END_BIT_OF_ICER3            (START_BIT_OF_ICER3 + SIZE_OF_ICERx_REG - 1)
+#define START_BIT_OF_ICER4          (START_BIT_OF_ICER + (5 * SIZE_OF_ICERx_REG))
+#define END_BIT_OF_ICER4            (START_BIT_OF_ICER4 + SIZE_OF_ICERx_REG - 1)
+#define START_BIT_OF_ICER5          (START_BIT_OF_ICER + (6 * SIZE_OF_ICERx_REG))
+#define END_BIT_OF_ICER5            (START_BIT_OF_ICER5 + SIZE_OF_ICERx_REG - 1)
+#define START_BIT_OF_ICER6          (START_BIT_OF_ICER + (7 * SIZE_OF_ICERx_REG))
+#define END_BIT_OF_ICER6            (START_BIT_OF_ICER6 + SIZE_OF_ICERx_REG - 1)
+#define START_BIT_OF_ICER7          (START_BIT_OF_ICER + (8 * SIZE_OF_ICERx_REG))
+#define END_BIT_OF_ICER7            (START_BIT_OF_ICER7 + SIZE_OF_ICERx_REG - 1)
+
 
 #endif /* _STM32F29XX_H_ */
