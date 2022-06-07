@@ -37,13 +37,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_ranges 00000090  00000000  00000000  00011380  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   000008b7  00000000  00000000  00011410  2**0
+ 17 .debug_line   000008bf  00000000  00000000  00011410  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000004f6  00000000  00000000  00011cc7  2**0
+ 18 .debug_str    000004fe  00000000  00000000  00011ccf  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  000121bd  2**0
+ 19 .comment      00000053  00000000  00000000  000121cd  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00000224  00000000  00000000  00012210  2**2
+ 20 .debug_frame  00000224  00000000  00000000  00012220  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -718,7 +718,7 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) {
 
 08000664 <main>:
 #define LOW                 0
-#define BTN_PRESSED         HIGH
+#define BTN_PRESSED         LOW
 
 void delay(void) ;
 
@@ -729,12 +729,12 @@ int main(void) {
     GPIO_Handle_t GpioLed ;
     GPIO_Handle_t GpioBtn ;
 
-    // Configure the LED to use PG13 with no PUPD with fast output speed
-    GpioLed.pGPIOx = GPIOG ;
+    // Configure the LED to use PA8 with no PUPD with fast output speed
+    GpioLed.pGPIOx = GPIOA ;
  800066a:	4b1c      	ldr	r3, [pc, #112]	; (80006dc <main+0x78>)
  800066c:	60fb      	str	r3, [r7, #12]
-    GpioLed.GPIO_PinConfig.GPIO_PinNumber   = GPIO_PIN_NO_13 ;
- 800066e:	230d      	movs	r3, #13
+    GpioLed.GPIO_PinConfig.GPIO_PinNumber   = GPIO_PIN_NO_8 ;
+ 800066e:	2300      	movs	r3, #0
  8000670:	743b      	strb	r3, [r7, #16]
     GpioLed.GPIO_PinConfig.GPIO_PinMode     = GPIO_MODE_OUTPUT ;
  8000672:	2301      	movs	r3, #1
@@ -742,15 +742,14 @@ int main(void) {
     GpioLed.GPIO_PinConfig.GPIO_PinSpeed    = GPIO_SPEED_FAST ;
  8000676:	2302      	movs	r3, #2
  8000678:	74bb      	strb	r3, [r7, #18]
-    GpioLed.GPIO_PinConfig.GPIO_PinOPType   = GPIO_OP_TYPE_PP ;                 // Push-Pull
+    GpioLed.GPIO_PinConfig.GPIO_PinOPType   = GPIO_OP_TYPE_PP ;
  800067a:	2300      	movs	r3, #0
  800067c:	753b      	strb	r3, [r7, #20]
-    // GpioLed.GPIO_PinConfig.GPIO_PinOPType   = GPIO_OP_TYPE_OD ;                 // Open Drain - Requires a 470 Ohm external resistor to pull up
     GpioLed.GPIO_PinConfig.GPIO_PinPuPdCtrl = GPIO_NO_PUPD ;
  800067e:	2300      	movs	r3, #0
  8000680:	74fb      	strb	r3, [r7, #19]
-
-    GPIO_PeriClockControl(GPIOG, ENABLE) ;
+    // Enable GPIO clock and initialize it
+    GPIO_PeriClockControl(GPIOA, ENABLE) ;
  8000682:	2101      	movs	r1, #1
  8000684:	4815      	ldr	r0, [pc, #84]	; (80006dc <main+0x78>)
  8000686:	f7ff fdb1 	bl	80001ec <GPIO_PeriClockControl>
@@ -759,12 +758,15 @@ int main(void) {
  800068e:	4618      	mov	r0, r3
  8000690:	f7ff fef8 	bl	8000484 <GPIO_Init>
 
-    // Configure the button to use PA0 with no PUPD with fast output speed
-    GpioBtn.pGPIOx = GPIOA ;
+    /*
+     * Note: The button uses a pull-up resistor and is active LOW
+     */
+    // Configure the button to use PB12 with external PUPD and fast output speed
+    GpioBtn.pGPIOx = GPIOB ;
  8000694:	4b12      	ldr	r3, [pc, #72]	; (80006e0 <main+0x7c>)
  8000696:	603b      	str	r3, [r7, #0]
-    GpioBtn.GPIO_PinConfig.GPIO_PinNumber   = GPIO_PIN_NO_0 ;
- 8000698:	2300      	movs	r3, #0
+    GpioBtn.GPIO_PinConfig.GPIO_PinNumber   = GPIO_PIN_NO_12 ;
+ 8000698:	230c      	movs	r3, #12
  800069a:	713b      	strb	r3, [r7, #4]
     GpioBtn.GPIO_PinConfig.GPIO_PinMode     = GPIO_MODE_INPUT ;
  800069c:	2300      	movs	r3, #0
@@ -775,8 +777,8 @@ int main(void) {
     GpioLed.GPIO_PinConfig.GPIO_PinPuPdCtrl = GPIO_NO_PUPD ;
  80006a4:	2300      	movs	r3, #0
  80006a6:	74fb      	strb	r3, [r7, #19]
-
-    GPIO_PeriClockControl(GPIOA, ENABLE) ;
+    // Enable GPIO clock and initialize it
+    GPIO_PeriClockControl(GPIOB, ENABLE) ;
  80006a8:	2101      	movs	r1, #1
  80006aa:	480d      	ldr	r0, [pc, #52]	; (80006e0 <main+0x7c>)
  80006ac:	f7ff fd9e 	bl	80001ec <GPIO_PeriClockControl>
@@ -793,7 +795,7 @@ int main(void) {
  80006be:	4618      	mov	r0, r3
  80006c0:	f7ff ffa7 	bl	8000612 <GPIO_ReadFromInputPin>
  80006c4:	4603      	mov	r3, r0
- 80006c6:	2b01      	cmp	r3, #1
+ 80006c6:	2b00      	cmp	r3, #0
  80006c8:	d1f6      	bne.n	80006b8 <main+0x54>
             // Debounce
             delay() ;
@@ -806,8 +808,8 @@ int main(void) {
  80006d6:	f7ff ffb1 	bl	800063c <GPIO_ToggleOutputPin>
         if (GPIO_ReadFromInputPin(GpioBtn.pGPIOx, GpioBtn.GPIO_PinConfig.GPIO_PinNumber) == BTN_PRESSED) {
  80006da:	e7ed      	b.n	80006b8 <main+0x54>
- 80006dc:	40021800 	.word	0x40021800
- 80006e0:	40020000 	.word	0x40020000
+ 80006dc:	40020000 	.word	0x40020000
+ 80006e0:	40020400 	.word	0x40020400
 
 080006e4 <delay>:
  * @return      none

@@ -1,14 +1,6 @@
 /**
  * @file 003_ExternalLedButton.c
  * @author Michael Ly (github.com/Michael-Q-Ly)
- * @brief 
- * @version 0.1
- * @date 2022-06-06
- * 
- * @copyright Copyright (c) 2022
- * 
- */
- * @author Michael Ly (github.com/Michael-Q-Ly)
  * @brief  Uses an external button attach to PB12 to toggle an LED attached to PA14 when the button is pressed
  *         Be sure to use a pullup or pulldown resistor as well as a current-limiting resistor     
  * @version 0.1
@@ -30,9 +22,9 @@ int main(void) {
     GPIO_Handle_t GpioLed ;
     GPIO_Handle_t GpioBtn ;
 
-    // Configure the LED to use PA14 with no PUPD with fast output speed
+    // Configure the LED to use PA8 with no PUPD with fast output speed
     GpioLed.pGPIOx = GPIOA ;
-    GpioLed.GPIO_PinConfig.GPIO_PinNumber   = GPIO_PIN_NO_14 ;
+    GpioLed.GPIO_PinConfig.GPIO_PinNumber   = GPIO_PIN_NO_8 ;
     GpioLed.GPIO_PinConfig.GPIO_PinMode     = GPIO_MODE_OUTPUT ;
     GpioLed.GPIO_PinConfig.GPIO_PinSpeed    = GPIO_SPEED_FAST ;
     GpioLed.GPIO_PinConfig.GPIO_PinOPType   = GPIO_OP_TYPE_PP ;
