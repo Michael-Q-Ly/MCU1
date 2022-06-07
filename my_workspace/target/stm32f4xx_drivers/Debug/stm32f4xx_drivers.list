@@ -711,9 +711,10 @@ int main(void) {
     GpioLed.GPIO_PinConfig.GPIO_PinSpeed    = GPIO_SPEED_FAST ;
  800064e:	2302      	movs	r3, #2
  8000650:	72bb      	strb	r3, [r7, #10]
-    GpioLed.GPIO_PinConfig.GPIO_PinOPType   = GPIO_OP_TYPE_PP ;
+    GpioLed.GPIO_PinConfig.GPIO_PinOPType   = GPIO_OP_TYPE_PP ;                 // Push-Pull
  8000652:	2300      	movs	r3, #0
  8000654:	733b      	strb	r3, [r7, #12]
+    // GpioLed.GPIO_PinConfig.GPIO_PinOPType   = GPIO_OP_TYPE_OD ;                 // Open Drain - Requires a 470 Ohm external resistor to pull up
     GpioLed.GPIO_PinConfig.GPIO_PinPuPdCtrl = GPIO_NO_PUPD ;
  8000656:	2300      	movs	r3, #0
  8000658:	72fb      	strb	r3, [r7, #11]
@@ -750,7 +751,7 @@ void delay(void) {
  8000680:	b480      	push	{r7}
  8000682:	b083      	sub	sp, #12
  8000684:	af00      	add	r7, sp, #0
-    for (uint32_t i = 0 ; i < 500000 ; i++) ;
+    for (uint32_t i = 0 ; i < 100000 ; i++) ;
  8000686:	2300      	movs	r3, #0
  8000688:	607b      	str	r3, [r7, #4]
  800068a:	e002      	b.n	8000692 <delay+0x12>
@@ -769,7 +770,7 @@ void delay(void) {
  80006a2:	bc80      	pop	{r7}
  80006a4:	4770      	bx	lr
  80006a6:	bf00      	nop
- 80006a8:	0007a11f 	.word	0x0007a11f
+ 80006a8:	0001869f 	.word	0x0001869f
 
 080006ac <Reset_Handler>:
 

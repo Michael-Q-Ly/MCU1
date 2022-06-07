@@ -23,7 +23,8 @@ int main(void) {
     GpioLed.GPIO_PinConfig.GPIO_PinNumber   = GPIO_PIN_NO_13 ;
     GpioLed.GPIO_PinConfig.GPIO_PinMode     = GPIO_MODE_OUTPUT ;
     GpioLed.GPIO_PinConfig.GPIO_PinSpeed    = GPIO_SPEED_FAST ;
-    GpioLed.GPIO_PinConfig.GPIO_PinOPType   = GPIO_OP_TYPE_PP ;
+    GpioLed.GPIO_PinConfig.GPIO_PinOPType   = GPIO_OP_TYPE_PP ;                 // Push-Pull
+    // GpioLed.GPIO_PinConfig.GPIO_PinOPType   = GPIO_OP_TYPE_OD ;                 // Open Drain - Requires a 470 Ohm external resistor to pull up
     GpioLed.GPIO_PinConfig.GPIO_PinPuPdCtrl = GPIO_NO_PUPD ;
 
     GPIO_PeriClockControl(GPIOG, ENABLE) ;
@@ -48,5 +49,5 @@ int main(void) {
  * 
  */
 void delay(void) {
-    for (uint32_t i = 0 ; i < 500000 ; i++) ;
+    for (uint32_t i = 0 ; i < 100000 ; i++) ;
 }
