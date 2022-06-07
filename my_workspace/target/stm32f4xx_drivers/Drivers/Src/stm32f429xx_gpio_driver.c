@@ -104,33 +104,39 @@ void GPIO_Init(GPIO_Handle_t *pGPIO_Handle) {
         pGPIO_Handle->pGPIOx->MODER |= temp ;                                                                       // Set
     }
     else {
-        // TODO: later; this is for interrupt mode
+        // Interrupt mode
+        uint8_t bitFieldOffset = pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber ;
         switch (pGPIO_Handle->GPIO_PinConfig.GPIO_PinMode) {
             case GPIO_MODE_IT_TF:
                 // 1. Configure the FTSR
-                EXTI->FTSR |= (1 << pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber) ;
+                EXTI->FTSR |= (1 << bitFieldOffset) ;
                 // Clear the corresponding RTSR bit
-                EXTI->FTSR &= ~(1 << pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber) ;
+                EXTI->FTSR &= ~(1 << bitFieldOffset) ;
                 break ;
             case GPIO_MODE_IT_TR:
                 // 1. Configure the RTSR
-                EXTI->RTSR |= (1 << pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber) ;
+                EXTI->RTSR |= (1 << bitFieldOffset) ;
                 // Clear the corresponding RTSR bit
-                EXTI->RTSR &= ~(1 << pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber) ;
+                EXTI->RTSR &= ~(1 << bitFieldOffset) ;
                 break ;
             case GPIO_MODE_IT_TRF:
                 // 1. Configure the FTSR and RTSR
-                EXTI->FTSR |= (1 << pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber) ;
-                EXTI->RTSR |= (1 << pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber) ;
+                EXTI->FTSR |= (1 << bitFieldOffset) ;
+                EXTI->RTSR |= (1 << bitFieldOffset) ;
                 break ;
             default:
                 return ;
         }
 
         // 2. Configure the GPIO port selection in SYSCFG_EXTICR
+        uint8_t temp1 = bitFieldOffset / 4 ;
+        uint8_t temp2 = bitFieldOffset % 4 ;
+        uint8_t portCode = GPIO_BASE_ADDR_TO_CODE(pGPIO_Handle->pGPIOx) ;
+        SYSCFG->EXTICR[temp1] &= ~(0xF << (temp2 * 4)) ;                                                            // Clear 4 bits
+        SYSCFG->EXTICR[temp1] |= portCode << (temp2 * 4) ;                                                          // Set 4 bits
 
         // 3. Enable the EXTI interrupt delivery using IMR
-        EXTI->IMR |= (1 << pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber) ;
+        EXTI->IMR |= (1 << bitFieldOffset) ;
     }
 
     // 2. Configure the speed

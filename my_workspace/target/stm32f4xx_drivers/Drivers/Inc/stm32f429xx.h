@@ -13,53 +13,6 @@
 
 #include <stdint.h>
 
-/*
- * Generic macros
- */
-
-#define ENABLE                  1
-#define DISABLE                 0
-#define SET                     ENABLE
-#define RESET                   DISABLE
-#define GPIO_PIN_SET            SET
-#define GPIO_PIN_RESET          DISABLE
-
-/*
- * Bit shifts
- */
-
-#define BIT0                    (0x1U << 0)
-#define BIT1                    (0x1U << 1)
-#define BIT2                    (0x1U << 2)
-#define BIT3                    (0x1U << 3)
-#define BIT4                    (0x1U << 4)
-#define BIT5                    (0x1U << 5)
-#define BIT6                    (0x1U << 6)
-#define BIT7                    (0x1U << 7)
-#define BIT8                    (0x1U << 8)
-#define BIT9                    (0x1U << 9)
-#define BIT10                   (0x1U << 10)
-#define BIT11                   (0x1U << 11)
-#define BIT12                   (0x1U << 12)
-#define BIT13                   (0x1U << 13)
-#define BIT14                   (0x1U << 14)
-#define BIT15                   (0x1U << 15)
-#define BIT16                   (0x1U << 16)
-#define BIT17                   (0x1U << 17)
-#define BIT18                   (0x1U << 18)
-#define BIT19                   (0x1U << 19)
-#define BIT20                   (0x1U << 20)
-#define BIT21                   (0x1U << 21)
-#define BIT22                   (0x1U << 22)
-#define BIT23                   (0x1U << 23)
-#define BIT24                   (0x1U << 24)
-#define BIT25                   (0x1U << 25)
-#define BIT26                   (0x1U << 26)
-#define BIT27                   (0x1U << 27)
-#define BIT28                   (0x1U << 28)
-#define BIT29                   (0x1U << 29)
-#define BIT30                   (0x1U << 30)
-#define BIT31                   (0x1U << 31)
 
 /*
  * Base addresses of FLASH and SRAM memories
@@ -360,6 +313,55 @@ typedef struct {
 #define SYSCFG_PCLK_DI()        (RCC->APB2ENR &= ~BIT14)
 
 /*
+ * Generic macros
+ */
+
+#define ENABLE                  1
+#define DISABLE                 0
+#define SET                     ENABLE
+#define RESET                   DISABLE
+#define GPIO_PIN_SET            SET
+#define GPIO_PIN_RESET          DISABLE
+
+/*
+ * Bit shifts
+ */
+
+#define BIT0                    (0x1U << 0)
+#define BIT1                    (0x1U << 1)
+#define BIT2                    (0x1U << 2)
+#define BIT3                    (0x1U << 3)
+#define BIT4                    (0x1U << 4)
+#define BIT5                    (0x1U << 5)
+#define BIT6                    (0x1U << 6)
+#define BIT7                    (0x1U << 7)
+#define BIT8                    (0x1U << 8)
+#define BIT9                    (0x1U << 9)
+#define BIT10                   (0x1U << 10)
+#define BIT11                   (0x1U << 11)
+#define BIT12                   (0x1U << 12)
+#define BIT13                   (0x1U << 13)
+#define BIT14                   (0x1U << 14)
+#define BIT15                   (0x1U << 15)
+#define BIT16                   (0x1U << 16)
+#define BIT17                   (0x1U << 17)
+#define BIT18                   (0x1U << 18)
+#define BIT19                   (0x1U << 19)
+#define BIT20                   (0x1U << 20)
+#define BIT21                   (0x1U << 21)
+#define BIT22                   (0x1U << 22)
+#define BIT23                   (0x1U << 23)
+#define BIT24                   (0x1U << 24)
+#define BIT25                   (0x1U << 25)
+#define BIT26                   (0x1U << 26)
+#define BIT27                   (0x1U << 27)
+#define BIT28                   (0x1U << 28)
+#define BIT29                   (0x1U << 29)
+#define BIT30                   (0x1U << 30)
+#define BIT31                   (0x1U << 31)
+
+
+/*
  * Macros to reset GPIOx peripherals
  */
 
@@ -374,5 +376,35 @@ typedef struct {
 #define GPIOI_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT8) ;   (RCC->AHB1RSTR &= ~BIT8) ;  } while(0)
 #define GPIOJ_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT9) ;   (RCC->AHB1RSTR &= ~BIT9) ;  } while(0)
 #define GPIOK_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT10) ;  (RCC->AHB1RSTR &= ~BIT10) ; } while(0)
+
+/*
+ * Returns port code for given GPIOx base address
+ */
+#define GPIO_BASE_ADDR_TO_CODE(x)   ((x == GPIOA) ? 0 :\
+                                    (x == GPIOB) ? 1 :\
+                                    (x == GPIOC) ? 2 :\
+                                    (x == GPIOD) ? 3 :\
+                                    (x == GPIOE) ? 4 :\
+                                    (x == GPIOF) ? 5 :\
+                                    (x == GPIOG) ? 6 :\
+                                    (x == GPIOH) ? 7 :\
+                                    (x == GPIOI) ? 8 :\
+                                    (x == GPIOJ) ? 9 :\
+                                    (x == GPIOK) ? 10 : 0)      /* PK[15:12] Not used for EXTICR3 and EXTICR4 */
+
+/*
+ * IRQ (Interrupt Request) Numbers of STM32F429xx MCU
+ * NOTE: Update these macros with valid values according to your MCU
+ */
+
+// TODO: You may complete this list for other peripherals
+
+#define IRQ_NO_EXTI0                6
+#define IRQ_NO_EXTI1                7
+#define IRQ_NO_EXTI2                8
+#define IRQ_NO_EXTI3                9
+#define IRQ_NO_EXTI4                10
+#define IRQ_NO_EXTI9_5              23
+#define IRQ_NO_EXTI5_10             40
 
 #endif /* _STM32F29XX_H_ */
