@@ -178,39 +178,36 @@ typedef struct {
     volatile uint32_t AHB1RSTR ;                /*!< RCC AHB1 peripheral reset register                             Address offset: 0x10 */
     volatile uint32_t AHB2RSTR ;                /*!< RCC AHB2 peripheral reset register                             Address offset: 0x14 */
     volatile uint32_t AHB3RSTR ;                /*!< RCC AHB3 peripheral reset register                             Address offset: 0x18 */
-    uint32_t RESERVED0 ;                        /*!< Reserved byte */
+    uint32_t RESERVED0 ;                        /*!< Reserved byte                                                  Address offset: 0x1C */
     volatile uint32_t APB1RSTR ;                /*!< RCC APB1 peripheral reset register                             Address offset: 0x20 */
     volatile uint32_t APB2RSTR ;                /*!< RCC APB2 peripheral reset register                             Address offset: 0x24 */
-    uint32_t RESERVED1 ;                        /*!< Reserved byte */
-    uint32_t RESERVED2 ;                        /*!< Reserved byte */
+    uint32_t RESERVED1[2] ;                     /*!< Reserved bytes                                                 Address offset: 0x28 - 0x2C*/
     volatile uint32_t AHB1ENR ;                 /*!< RCC AHB1 peripheral clock register                             Address offset: 0x30 */
     volatile uint32_t AHB2ENR ;                 /*!< RCC AHB2 peripheral clock enable register                      Address offset: 0x34 */
     volatile uint32_t AHB3ENR ;                 /*!< RCC AHB3 peripheral clock enable register                      Address offset: 0x38 */
-    uint32_t RESERVED3 ;                        /*!< Reserved byte */
+    uint32_t RESERVED2 ;                        /*!< Reserved byte                                                  Address offset: 0x3C */
     volatile uint32_t APB1ENR ;                 /*!< RCC APB1 peripheral clock enable register                      Address offset: 0x40 */
     volatile uint32_t APB2ENR ;                 /*!< RCC APB2 peripheral clock enable register                      Address offset: 0x44 */
-    uint32_t RESERVED4 ;                        /*!< Reserved byte */
-    uint32_t RESERVED5 ;                        /*!< Reserved byte */
+    uint32_t RESERVED3[2] ;                     /*!< Reserved bytes                                                 Address offset: 0x48 - 0x4C */
     volatile uint32_t AHB1LPENR ;               /*!< RCC AHB1 peripheral clock enable in low power mode register    Address offset: 0x50 */
     volatile uint32_t AHB2LPENR ;               /*!< RCC AHB2 peripheral clock enable in low power mode register    Address offset: 0x54 */
     volatile uint32_t AHB3LPENR ;               /*!< RCC AHB3 peripheral clock enable in low power mode register    Address offset: 0x58 */
-    uint32_t RESERVED6 ;                        /*!< Reserved byte */
+    uint32_t RESERVED4 ;                        /*!< Reserved byte                                                  Address offset: 0x5C */
     volatile uint32_t APB1LPENR ;               /*!< RCC APB1 peripheral clock enable in low power mode register    Address offset: 0x60 */
     volatile uint32_t APB2LPENR ;               /*!< RCC APB2 peripheral clock enabled in low power mode register   Address offset: 0x64 */
-    uint32_t RESERVED7 ;                        /*!< Reserved byte */
-    uint32_t RESERVED8 ;                        /*!< Reserved byte */
+    uint32_t RESERVED5[2] ;                     /*!< Reserved bytes                                                 Address offset: 0x68 - 0x6C */
     volatile uint32_t BDCR ;                    /*!< RCC Backup domain control register                             Address offset: 0x70 */
     volatile uint32_t CSR ;                     /*!< RCC clock control & status register                            Address offset: 0x74 */
-    uint32_t RESERVED9 ;                        /*!< Reserved byte */
-    uint32_t RESERVED10 ;                       /*!< Reserved byte */
+    uint32_t RESERVED6[2] ;                     /*!< Reserved bytes                                                 Address offset: 0x78 - 0x7C */
     volatile uint32_t SSCGR ;                   /*!< RCC spread spectrum clock generation register                  Address offset: 0x80 */
     volatile uint32_t PLLI2SCFGR ;              /*!< RCC PLLI2S configuration register                              Address offset: 0x84 */
     volatile uint32_t PLLSAICFGR ;              /*!< RCC PLL configuration register                                 Address offset: 0x88 */
     volatile uint32_t DCKCFGR ;                 /*!< RCC Dedicated Clock Configuration Register                     Address offset: 0x8C */
 } RCC_RegDef_t ;
 
-/*
- * Peripheral register definition structure for EXTI
+/**
+ * @brief Peripheral register definition structure for EXTI
+ * 
  */
 typedef struct {
     volatile uint32_t IMR ;                     /*!< Interrupt mask register                                        Address offset: 0x00 */
@@ -220,6 +217,18 @@ typedef struct {
     volatile uint32_t SWIER ;                   /*!< Software interrupt event register                              Address offset: 0x10 */
     volatile uint32_t PR ;                      /*!< Pending register                                               Address offset: 0x14 */
 } EXTI_RegDef_t ;
+
+/**
+ * @brief Peripheral register definition structure for SYSCFG
+ * 
+ */
+typedef struct {
+    volatile uint32_t MEMRMP ;                  /*!< Memory remap register                                          Address offset: 0x00 */
+    volatile uint32_t PMC ;                     /*!< Peripheral mode configuration register                         Address offset: 0x04 */
+    volatile uint32_t EXTICR[4] ;               /*!< External interrupt configuration registers 1-4                 Address offset: 0x08 - 0x14 */
+    uint32_t RESERVED0[2] ;                     /* Reserved bytes                                                   Address offset: 0x18 - 0x1C */
+    volatile uint32_t CMPCR ;                   /*!< Compensation cell control register                             Address offset: 0x20 */
+} SYSCFG_RegDef_t ;
 
 /*
  * Peripheral definitions (peripheral base addresses typecasted to xxx_RegDef_t)
@@ -240,6 +249,8 @@ typedef struct {
 #define RCC                     ((RCC_RegDef_t*) RCC_BASE_ADDR)
 
 #define EXTI                    ((EXTI_RegDef_t*) EXTI_BASE_ADDR)
+
+#define SYSCFG                  ((SYSCFG_RegDef_t*) SYSCFG_BASE_ADDR)
 
 /*
  * Clock enable macros for GPIOx peripherals
