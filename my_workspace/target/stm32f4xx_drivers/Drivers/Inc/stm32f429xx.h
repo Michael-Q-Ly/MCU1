@@ -42,6 +42,14 @@
 #define NVIC_ICER7              ((volatile uint32_t*) 0xE000E18C)
 
 /*
+ * ARM Cortex Mx processor NVIC priority register address calculation
+ */
+
+#define NVIC_PR_BASE_ADDR       ((volatile uint32_t*) 0XE000E400)
+
+#define NO_PRIORITY_BITS_IMPLEMENTED    4                               /*!< Upper 4 bits of interrupt priority register byte offset; lower 4 bytes are ignored */
+
+/*
  * Base addresses of FLASH and SRAM memories
  */
 

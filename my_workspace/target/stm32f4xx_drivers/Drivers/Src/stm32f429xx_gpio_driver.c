@@ -365,10 +365,19 @@ void GPIO_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi) {
  * 
  * @return                      none
  * 
- * @note                        none
+ * @note                        Since the lower 4 bits of each byte offset are ignored, we must be
+ *                              careful in how much we shift our IPR value
  */
 void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority) {
+    // 1. Calculate which IPR register to use
+    uint8_t iprx = IRQNumber / 4 ;
+    uint8_t iprx_bit = IRQNumber % 4 ;
 
+    uint8_t shift_amount = (8 * iprx_bit) + (8 - NO_PRIORITY_BITS_IMPLEMENTED) ;
+
+    // Write to the IPR after clearing the byte offset
+    *(NVIC_PR_BASE_ADDR + iprx) &= ~(0xFF << shift_amount) ;
+    *(NVIC_PR_BASE_ADDR + iprx) |= (IRQPriority << shift_amount) ;
 }
 
 /****************************************************************************************************
