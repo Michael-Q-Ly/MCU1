@@ -40,15 +40,15 @@ typedef struct {
  * GPIO pin numbers
  */
 #define GPIO_PIN_NO_0           0
-#define GPIO_PIN_NO_1           0
-#define GPIO_PIN_NO_2           0
-#define GPIO_PIN_NO_3           0
-#define GPIO_PIN_NO_4           0
-#define GPIO_PIN_NO_5           0
-#define GPIO_PIN_NO_6           0
-#define GPIO_PIN_NO_7           0
-#define GPIO_PIN_NO_8           0
-#define GPIO_PIN_NO_9           0
+#define GPIO_PIN_NO_1           1
+#define GPIO_PIN_NO_2           2
+#define GPIO_PIN_NO_3           3
+#define GPIO_PIN_NO_4           4
+#define GPIO_PIN_NO_5           5
+#define GPIO_PIN_NO_6           6
+#define GPIO_PIN_NO_7           7
+#define GPIO_PIN_NO_8           8
+#define GPIO_PIN_NO_9           9
 #define GPIO_PIN_NO_10          10
 #define GPIO_PIN_NO_11          11
 #define GPIO_PIN_NO_12          12
@@ -133,7 +133,7 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) ;
  */
 
 void GPIO_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi) ;
-void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority) ;
+void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority) ;
 void GPIO_IRQHandler(uint8_t pinNumber) ;
 
 #endif /* _STM32F429XX_H_ */

@@ -36,10 +36,10 @@
 #define NVIC_ICER1              ((volatile uint32_t*) 0xE000E184)
 #define NVIC_ICER2              ((volatile uint32_t*) 0xE000E188)
 #define NVIC_ICER3              ((volatile uint32_t*) 0xE000E18C)
-#define NVIC_ICER4              ((volatile uint32_t*) 0xE000E180)
-#define NVIC_ICER5              ((volatile uint32_t*) 0xE000E184)
-#define NVIC_ICER6              ((volatile uint32_t*) 0xE000E188)
-#define NVIC_ICER7              ((volatile uint32_t*) 0xE000E18C)
+#define NVIC_ICER4              ((volatile uint32_t*) 0xE000E190)
+#define NVIC_ICER5              ((volatile uint32_t*) 0xE000E194)
+#define NVIC_ICER6              ((volatile uint32_t*) 0xE000E198)
+#define NVIC_ICER7              ((volatile uint32_t*) 0xE000E19C)
 
 /*
  * ARM Cortex Mx processor NVIC priority register address calculation

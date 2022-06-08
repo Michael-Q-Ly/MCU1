@@ -10,10 +10,7 @@
  */
 #include "stm32f429xx.h"
 #include "stm32f429xx_gpio_driver.h"
-
-#define HIGH                1
-#define LOW                 0
-#define BTN_PRESSED         LOW
+#include <string.h>
 
 void delay(void) ;
 void EXTI9_5_IRQHandler(void) ;
@@ -21,16 +18,19 @@ void EXTI9_5_IRQHandler(void) ;
 int main(void) {
     GPIO_Handle_t GpioLed ;
     GPIO_Handle_t GpioBtn ;
+    // Set each structure element to zero for both LED and button
+    memset(&GpioLed, 0, sizeof(GpioLed)) ;
+    memset(&GpioBtn, 0, sizeof(GpioBtn)) ;
 
     // Configure the LED to use PD12 with no PUPD with fast output speed
     GpioLed.pGPIOx = GPIOD ;
     GpioLed.GPIO_PinConfig.GPIO_PinNumber   = GPIO_PIN_NO_12 ;
     GpioLed.GPIO_PinConfig.GPIO_PinMode     = GPIO_MODE_OUTPUT ;
-    GpioLed.GPIO_PinConfig.GPIO_PinSpeed    = GPIO_SPEED_FAST ;
+    GpioLed.GPIO_PinConfig.GPIO_PinSpeed    = GPIO_SPEED_LOW;
     GpioLed.GPIO_PinConfig.GPIO_PinOPType   = GPIO_OP_TYPE_PP ;
     GpioLed.GPIO_PinConfig.GPIO_PinPuPdCtrl = GPIO_NO_PUPD ;
     // Enable GPIO clock and initialize it
-    GPIO_PeriClockControl(GPIOA, ENABLE) ;
+    GPIO_PeriClockControl(GpioLed.pGPIOx, ENABLE) ;
     GPIO_Init(&GpioLed) ;
 
     /*
@@ -42,10 +42,13 @@ int main(void) {
     // Configure interrupt for falling edge
     GpioBtn.GPIO_PinConfig.GPIO_PinMode     = GPIO_MODE_IT_TF ;
     GpioBtn.GPIO_PinConfig.GPIO_PinSpeed    = GPIO_SPEED_FAST ;
-    GpioLed.GPIO_PinConfig.GPIO_PinPuPdCtrl = GPIO_NO_PUPD ;
+    GpioLed.GPIO_PinConfig.GPIO_PinPuPdCtrl = GPIO_PIN_PU ;
     // Enable GPIO clock and initialize it
-    GPIO_PeriClockControl(GPIOB, ENABLE) ;
+    GPIO_PeriClockControl(GpioBtn.pGPIOx, ENABLE) ;
     GPIO_Init(&GpioBtn) ;
+
+    // Get the LED into a known state - its RESET state
+    GPIO_WriteToOutputPin(GpioLed.pGPIOx, GpioLed.GPIO_PinConfig.GPIO_PinNumber, GPIO_PIN_RESET) ;
 
     // IRQ configurations
     GPIO_IRQPriorityConfig(IRQ_NO_EXTI9_5, NVIC_IRQ_PRI15) ;
@@ -67,10 +70,22 @@ int main(void) {
  * 
  */
 void delay(void) {
+    // This will introduce ~200 ms delay when system clock is 16 MHz
     for (uint32_t i = 0 ; i < 500000/2 ; i++) ;
 }
 
+/****************************************************************************************************
+ * @fn          EXTI9_5_IRQHandler
+ * 
+ * @brief       Handles interrupts for pins 5 through 9; toggles LED from falling edge button press
+ * 
+ * @return      none
+ * 
+ * @note        none
+ * 
+ */
 void EXTI9_5_IRQHandler(void) {
-        GPIO_IRQHandler(GPIO_PIN_NO_5) ;
-        GPIO_ToggleOutputPin(GPIOD, GPIO_PIN_NO_12) ;
+    delay() ;
+    GPIO_IRQHandler(GPIO_PIN_NO_5) ;
+    GPIO_ToggleOutputPin(GPIOD, GPIO_PIN_NO_12) ;
 }
