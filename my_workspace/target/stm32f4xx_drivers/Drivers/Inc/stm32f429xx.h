@@ -443,6 +443,13 @@ typedef struct {
 #define IRQ_NO_EXTI5_10             40
 
 /*
+ * Macros for IRQ priority levels
+ */
+
+#define NVIC_IRQ_PRI0               0
+#define NVIC_IRQ_PRI15              15
+
+/*
  * ISER0-ISER7 bit boundaries
  */
 
