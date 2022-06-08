@@ -5,15 +5,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Src/003_ExternalLedButton.c \
+../Src/main.c \
 ../Src/sysmem.c 
 
 OBJS += \
-./Src/003_ExternalLedButton.o \
+./Src/main.o \
 ./Src/sysmem.o 
 
 C_DEPS += \
-./Src/003_ExternalLedButton.d \
+./Src/main.d \
 ./Src/sysmem.d 
 
 
@@ -24,7 +24,7 @@ Src/%.o: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/003_ExternalLedButton.d ./Src/003_ExternalLedButton.o ./Src/sysmem.d ./Src/sysmem.o
+	-$(RM) ./Src/main.d ./Src/main.o ./Src/sysmem.d ./Src/sysmem.o
 
 .PHONY: clean-Src
 
