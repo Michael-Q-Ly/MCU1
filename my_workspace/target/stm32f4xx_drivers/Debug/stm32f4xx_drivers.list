@@ -447,7 +447,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIO_Handle) {
  80004a2:	005b      	lsls	r3, r3, #1
  80004a4:	fa02 f303 	lsl.w	r3, r2, r3
  80004a8:	617b      	str	r3, [r7, #20]
-        pGPIO_Handle->pGPIOx->MODER &= ~(0x3 << 2 * (pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber)) ;                      // Clear 2 bit fields
+        pGPIO_Handle->pGPIOx->MODER &= ~(0x3 << 2 * (pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber)) ;                // Clear 2 bit fields
  80004aa:	687b      	ldr	r3, [r7, #4]
  80004ac:	681b      	ldr	r3, [r3, #0]
  80004ae:	681a      	ldr	r2, [r3, #0]
@@ -691,7 +691,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIO_Handle) {
  8000680:	4002      	ands	r2, r0
  8000682:	3302      	adds	r3, #2
  8000684:	f841 2023 	str.w	r2, [r1, r3, lsl #2]
-        SYSCFG->EXTICR[temp1] |= (portCode << (temp2 * 4)) ;                                                          // Set 4 bits
+        SYSCFG->EXTICR[temp1] |= (portCode << (temp2 * 4)) ;                                                        // Set 4 bits
  8000688:	4a5e      	ldr	r2, [pc, #376]	; (8000804 <GPIO_Init+0x380>)
  800068a:	7cbb      	ldrb	r3, [r7, #18]
  800068c:	3302      	adds	r3, #2
@@ -1251,7 +1251,7 @@ void GPIO_IRQHandler(uint8_t pinNumber) {
  8000a40:	40013c00 	.word	0x40013c00
 
 08000a44 <main>:
-#define BTN_PRESSED         LOW
+#include <string.h>
 
 void delay(void) ;
 void EXTI9_5_IRQHandler(void) ;
