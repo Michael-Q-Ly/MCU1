@@ -310,7 +310,6 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) {
  * @brief                       Configures the IRQ of a GPIO
  * 
  * @param[in] IRQNumber         IRQ number from NVIC table of ARM Cortex M4
- * @param[in] IRQPriority       IRQ priority from NVIC table of ARM Cortex M4
  * @param[in] EnorDi            ENABLE or DISABLE macros
  * 
  * @return                      none
@@ -395,7 +394,7 @@ void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority) {
 void GPIO_IRQHandler(uint8_t pinNumber) {
     // Clear the EXTI PR register corresponding to the pin number
     if (EXTI->PR & (1 << pinNumber)) {
-        // Clear
-        EXTI->PR |= (1<< pinNumber) ;
+        // Cleared by writing '1'
+        EXTI->PR |= (1 << pinNumber) ;
     }
 }
