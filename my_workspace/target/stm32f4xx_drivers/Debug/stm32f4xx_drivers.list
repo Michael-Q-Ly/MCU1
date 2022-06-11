@@ -1229,8 +1229,8 @@ void GPIO_IRQHandler(uint8_t pinNumber) {
  8000a1a:	4013      	ands	r3, r2
  8000a1c:	2b00      	cmp	r3, #0
  8000a1e:	d009      	beq.n	8000a34 <GPIO_IRQHandler+0x30>
-        // Clear
-        EXTI->PR |= (1<< pinNumber) ;
+        // Cleared by writing '1'
+        EXTI->PR |= (1 << pinNumber) ;
  8000a20:	4b07      	ldr	r3, [pc, #28]	; (8000a40 <GPIO_IRQHandler+0x3c>)
  8000a22:	695b      	ldr	r3, [r3, #20]
  8000a24:	79fa      	ldrb	r2, [r7, #7]
