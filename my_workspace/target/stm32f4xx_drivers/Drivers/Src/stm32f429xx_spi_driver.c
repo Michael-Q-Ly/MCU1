@@ -34,6 +34,31 @@
  * 
  */
 void SPI_PeriClockControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
+    // If enabling,
+    if (EnorDi == ENABLE) {
+        // Check which SPI peripheral and enable
+        switch ((unsigned long int) pSPIx) {
+                case SPI1_BASE_ADDR:        SPI1_PCLK_EN() ;        break ;
+                case SPI2_BASE_ADDR:        SPI2_PCLK_EN() ;        break ;
+                case SPI3_BASE_ADDR:        SPI3_PCLK_EN() ;        break ;
+                case SPI4_BASE_ADDR:        SPI4_PCLK_EN() ;        break ;
+                case SPI5_BASE_ADDR:        SPI5_PCLK_EN() ;        break ;
+                case SPI6_BASE_ADDR:        SPI6_PCLK_EN() ;        break ;
+                default:                    return ;                break ;         // TODO: return error or cause a user fault
+        }
+    }
+    else {
+        // Disable the corresponding SPI peripheral otherwise
+        switch ((unsigned long int) pSPIx) {
+                case SPI1_BASE_ADDR:        SPI1_PCLK_DI() ;        break ;
+                case SPI2_BASE_ADDR:        SPI2_PCLK_DI() ;        break ;
+                case SPI3_BASE_ADDR:        SPI3_PCLK_DI() ;        break ;
+                case SPI4_BASE_ADDR:        SPI4_PCLK_DI() ;        break ;
+                case SPI5_BASE_ADDR:        SPI5_PCLK_DI() ;        break ;
+                case SPI6_BASE_ADDR:        SPI6_PCLK_DI() ;        break ;
+                default:                    return ;                break ;         // TODO: return error or cause a user fault
+        }
+    }
 
 }
 

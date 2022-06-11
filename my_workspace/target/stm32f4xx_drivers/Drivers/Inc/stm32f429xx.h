@@ -256,6 +256,13 @@ typedef struct {
 #define GPIOJ                   ((GPIO_RegDef_t*) GPIOJ_BASE_ADDR)
 #define GPIOK                   ((GPIO_RegDef_t*) GPIOK_BASE_ADDR)
 
+#define SPI1                    ((SPI_RegDef_t*) SPI1_BASE_ADDR)
+#define SPI2                    ((SPI_RegDef_t*) SPI2_BASE_ADDR)
+#define SPI3                    ((SPI_RegDef_t*) SPI3_BASE_ADDR)
+#define SPI4                    ((SPI_RegDef_t*) SPI4_BASE_ADDR)
+#define SPI5                    ((SPI_RegDef_t*) SPI5_BASE_ADDR)
+#define SPI6                    ((SPI_RegDef_t*) SPI6_BASE_ADDR)
+
 #define RCC                     ((RCC_RegDef_t*) RCC_BASE_ADDR)
 
 #define EXTI                    ((EXTI_RegDef_t*) EXTI_BASE_ADDR)
