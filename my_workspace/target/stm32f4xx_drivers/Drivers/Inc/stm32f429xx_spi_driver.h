@@ -43,4 +43,37 @@ typedef struct {
  *                For more information about the APIs, check the function definitions               *
  ***************************************************************************************************/
 
+/*
+ * Peripheral clock setup
+ */
+
+void SPI_PeriClockControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi) ;
+
+/*
+ * Init and De-init
+ */
+
+void SPI_Init(SPI_Handle_t *pSPIHandle) ;
+void SPI_DeInit(SPI_RegDef_t *pSPIx) ;
+
+/*
+ * Data send and receive
+ */
+
+void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len) ;
+void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t pRxBuffer, uint32_t len) ;
+
+/*
+ * IRQ configuration and ISR handling
+ */
+
+void SPI_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi) ;
+void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority) ;
+void SPI_IRQHandler(SPI_Handle_t *pHandle) ;
+
+/*
+ * Other peripheral control APIs
+ */
+
+
 #endif /* _STM32F429XX_SPI_DRIVER_H_ */
