@@ -17,13 +17,13 @@
  * 
  */
 typedef struct {
-    uint8_t SPI_DeviceMode ;
-    uint8_t SPI_BusConfig ;
-    uint8_t SPI_SclkSpeed ;
-    uint8_t SPI_DFF ;
-    uint8_t SPI_CPOL ;
-    uint8_t SPI_CPHA ;
-    uint8_t SPI_SSM ;
+    uint8_t SPI_DeviceMode ;                                        /*!< Possible values from @ SPI_DeviceMode >*/
+    uint8_t SPI_BusConfig ;                                         /*!< Possible values from @ SPI_BusConfig >*/
+    uint8_t SPI_SclkSpeed ;                                         /*!< Possible values from @ SPI_SclkSpeed >*/
+    uint8_t SPI_DFF ;                                               /*!< Possible values from @ SPI_DFF >*/
+    uint8_t SPI_CPOL ;                                              /*!< Possible values from @ SPI_CPOL >*/
+    uint8_t SPI_CPHA ;                                              /*!< Possible values from @ SPI_CPHA >*/
+    uint8_t SPI_SSM ;                                               /*!< Possible values from @ SPI_SSM >*/
 } SPI_Config_t ;
 
 /**
@@ -32,8 +32,74 @@ typedef struct {
  */
 typedef struct {
     SPI_RegDef_t *pSPIx ;                                           /*!< This holds the base address of the SPIx(x:1,2,3,4,5,6) peripheral */
-    SPI_Config_t SPIConfig ;
+    SPI_Config_t SPIConfig ;                                        /*!< This holds the configuration of the SPI peripheral */
 } SPI_Handle_t ;
+
+/*
+ * @SPI_DeviceMode
+ * SPI Configuration: Device Mode as a controller or peripheral
+ */
+
+#define SPI_DEVICE_MODE_CONTROLLER          1                       /*!< Let us try to move away from MASTER notation */
+#define SPI_DEVICE_MODE_PERIPHERAL          0                       /*!< Let us try to move away from SLAVE notation */
+
+/*
+ * @SPI_BusConfig
+ * SPI Configuration: Set device mode as full duplex, half duplex, or simplex (TX-only or RX-only)
+ */
+
+#define SPI_BUS_CONFIG_FD                   1                       /*!< Full Duplex Mode >*/
+#define SPI_BUS_CONFIG_HD                   2                       /*!< Half Duplex Mode >*/
+#define SPI_BUS_CONFIG_SIMPLEX_TXONLY       3                       /*!< Simplex Mode - Tx-only >*/
+#define SPI_BUS_CONFIG_SIMPLEX_RXONLY       4                       /*!< Simplex Mode - Rx-only >*/
+
+/*
+ * @SPI_SclkSpeed
+ * SPI Configuration: SPI Serial Clock Speed division
+ */
+
+#define SPI_SCLK_SPEED_DIV2                 0                       /*!< Serial clock prescaler >*/
+#define SPI_SCLK_SPEED_DIV4                 1                       /*!< Serial clock prescaler >*/
+#define SPI_SCLK_SPEED_DIV8                 2                       /*!< Serial clock prescaler >*/
+#define SPI_SCLK_SPEED_DIV16                3                       /*!< Serial clock prescaler >*/
+#define SPI_SCLK_SPEED_DIV32                4                       /*!< Serial clock prescaler >*/
+#define SPI_SCLK_SPEED_DIV64                5                       /*!< Serial clock prescaler >*/
+#define SPI_SCLK_SPEED_DIV128               6                       /*!< Serial clock prescaler >*/
+#define SPI_SCLK_SPEED_DIV256               7                       /*!< Serial clock prescaler >*/
+
+/*
+ * @SPI_DFF
+ * SPI Configuration: Data Frame Format - 8-bit or 16-bit TX or RX
+ */
+
+#define SPI_DFF_8BITS                       0                       /*!< Transmit or receive 8 bits >*/
+#define SPI_DFF_16BITS                      1                       /*!< Transmit or receive 16 bits >*/
+
+/*
+ * @SPI_CPOL
+ * SPI Configuration: Clock Polarity - 0 or 1 when idle
+ */
+
+#define SPI_CPOL_LOW                        0                       /*!< Idle when clock is LOW >*/
+#define SPI_CPOL_HIGH                       1                       /*!< Idle when clock is HIGH >*/
+
+/*
+ * @SPI_CPHA
+ * SPI Configuration: Clock Phase - first or second edge of clock is first capture edge
+ */
+
+#define SPI_CPHA_LOW                        0                       /*!< First clock transition is the first data capture edge >*/
+#define SPI_CPHA_HIGH                       1                       /*!< Second clock transition is the first data capture edge >*/
+
+/*
+ * @SPI_SSM
+ * SPI Configuration: Software Slave (Peripheral) Management
+ */
+
+#define SPI_SSM_DI                          0                       /*!< Software slave management disabled >*/
+#define SPI_SSM_EN                          1                       /*!< Software slave management enabled >*/
+
+
 
 
 
