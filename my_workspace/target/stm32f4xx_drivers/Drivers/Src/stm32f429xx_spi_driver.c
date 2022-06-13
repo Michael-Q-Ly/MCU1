@@ -168,22 +168,29 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx) {
  * 
  * @return                  none
  * 
- * @note                    none
+ * @note                    the 16-bit DFF has its length decremented twice  since it sends 2 bytes
  * 
  */
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len) {
-    // 1. While the length is not zero,
-        // Wait until the Tx buffer is empty
+    while (len > 0) {
+        // 1. Wait until the Tx buffer is empty (TXE set)
+        while (!(pSPIx->SR & (1 << SPI_SR_TXE))) ;
 
-        // 2. If the Data Frame Format (DFF) is zero (8-bit),
-            // Load Data Register (DR) with 1 byte of data
-            // Increment the buffer address
-            // Then decrement the length and check the length again - This is done for the 1st while loop's whole scope
-        // else, if the DFF is 16 bits,
-            // Load DR with 2 bytes of data
-            // Increment the buffer address
-            // Then decrement the length (twice) and check the length again
-    // Exit the function
+        // Check if the DFF bit is set for 8 or 16-bits
+        if (pSPIx->CR1 != SPI_CR1_DFF) {
+            // 8-bit DFF
+            pSPIx->DR = *pTxBuffer ;
+            pTxBuffer++ ;
+            len-- ;
+        }
+        else {
+            // 16-bit DFF
+            pSPIx->DR = ((uint16_t*) pTxBuffer) ;
+            (uint16_t*) pTxBuffer++ ;
+            len-- ;
+            len-- ;
+        }
+    }
 }
 
 /****************************************************************************************************
