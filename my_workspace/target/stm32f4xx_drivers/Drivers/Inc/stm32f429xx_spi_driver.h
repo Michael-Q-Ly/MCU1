@@ -99,6 +99,12 @@ typedef struct {
 #define SPI_SSM_DI                          0                       /*!< Software slave management disabled >*/
 #define SPI_SSM_EN                          1                       /*!< Software slave management enabled >*/
 
+/*
+ * SPI-related status flag definitions
+ */
+
+#define SPI_TXE_FLAG                        (1 << SPI_SR_TXE)       /*!< Status Register TX Enable flag >*/
+
 
 
 

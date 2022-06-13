@@ -154,6 +154,31 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx) {
 
 
 /*
+ * Flag status
+ */
+
+/****************************************************************************************************
+ * @fn                      SPI_GetFlagStatus
+ * 
+ * @brief                   Returns true if status flag is set, and 0 if it is not set
+ * 
+ * @param pSPIx             Base address of an SPI peripheral
+ * @param FlagName          Status register flag that is to be checked
+ * 
+ * @return uint8_t          0 or 1
+ * 
+ * @note                    none
+ */
+uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName) {
+    if (pSPIx->SR & FlagName) {
+        return FLAG_SET ;
+    }
+    return FLAG_RESET ;
+}
+
+
+
+/*
  * Data send and receive
  */
 
@@ -174,7 +199,7 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx) {
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len) {
     while (len > 0) {
         // 1. Wait until the Tx buffer is empty (TXE set)
-        while (!(pSPIx->SR & (1 << SPI_SR_TXE))) ;
+        while (SPI_GetFlagStatus(pSPIx, SPI_TXE_FLAG) == FLAG_RESET) ;
 
         // Check if the DFF bit is set for 8 or 16-bits
         if (pSPIx->CR1 != SPI_CR1_DFF) {
