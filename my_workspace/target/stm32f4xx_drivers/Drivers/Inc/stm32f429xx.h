@@ -426,17 +426,17 @@ typedef struct {
  * Macros to reset GPIOx peripherals
  */
 
-#define GPIOA_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT0) ;   (RCC->AHB1RSTR &= ~BIT0) ;  } while(0)
-#define GPIOB_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT1) ;   (RCC->AHB1RSTR &= ~BIT1) ;  } while(0)
-#define GPIOC_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT2) ;   (RCC->AHB1RSTR &= ~BIT2) ;  } while(0)
-#define GPIOD_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT3) ;   (RCC->AHB1RSTR &= ~BIT3) ;  } while(0)
-#define GPIOE_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT4) ;   (RCC->AHB1RSTR &= ~BIT4) ;  } while(0)
-#define GPIOF_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT5) ;   (RCC->AHB1RSTR &= ~BIT5) ;  } while(0)
-#define GPIOG_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT6) ;   (RCC->AHB1RSTR &= ~BIT6) ;  } while(0)
-#define GPIOH_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT7) ;   (RCC->AHB1RSTR &= ~BIT7) ;  } while(0)
-#define GPIOI_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT8) ;   (RCC->AHB1RSTR &= ~BIT8) ;  } while(0)
-#define GPIOJ_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT9) ;   (RCC->AHB1RSTR &= ~BIT9) ;  } while(0)
-#define GPIOK_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT10) ;  (RCC->AHB1RSTR &= ~BIT10) ; } while(0)
+#define GPIOA_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT0) ;   (RCC->AHB1RSTR &= ~BIT0) ;      } while (0)
+#define GPIOB_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT1) ;   (RCC->AHB1RSTR &= ~BIT1) ;      } while (0)
+#define GPIOC_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT2) ;   (RCC->AHB1RSTR &= ~BIT2) ;      } while (0)
+#define GPIOD_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT3) ;   (RCC->AHB1RSTR &= ~BIT3) ;      } while (0)
+#define GPIOE_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT4) ;   (RCC->AHB1RSTR &= ~BIT4) ;      } while (0)
+#define GPIOF_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT5) ;   (RCC->AHB1RSTR &= ~BIT5) ;      } while (0)
+#define GPIOG_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT6) ;   (RCC->AHB1RSTR &= ~BIT6) ;      } while (0)
+#define GPIOH_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT7) ;   (RCC->AHB1RSTR &= ~BIT7) ;      } while (0)
+#define GPIOI_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT8) ;   (RCC->AHB1RSTR &= ~BIT8) ;      } while (0)
+#define GPIOJ_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT9) ;   (RCC->AHB1RSTR &= ~BIT9) ;      } while (0)
+#define GPIOK_REG_RESET()       do {    (RCC->AHB1RSTR |= BIT10) ;  (RCC->AHB1RSTR &= ~BIT10) ;     } while (0)
 
 /*
  * Returns port code for given GPIOx base address
@@ -456,6 +456,13 @@ typedef struct {
 /*
  * Macros to reset SPIx peripherals
  */
+
+#define SPI1_REG_RESET()        do {    (RCC->APB2RSTR |= BIT12) ;  (RCC->APB2RSTR &= ~BIT12) ;     } while (0)
+#define SPI2_REG_RESET()        do {    (RCC->APB1RSTR |= BIT14) ;  (RCC->APB1RSTR &= ~BIT14) ;     } while (0)
+#define SPI3_REG_RESET()        do {    (RCC->APB1RSTR |= BIT15) ;  (RCC->APB1RSTR &= ~BIT15) ;     } while (0)
+#define SPI4_REG_RESET()        do {    (RCC->APB2RSTR |= BIT13) ;  (RCC->APB2RSTR &= ~BIT13) ;     } while (0)
+#define SPI5_REG_RESET()        do {    (RCC->APB2RSTR |= BIT20) ;  (RCC->APB2RSTR &= ~BIT20) ;     } while (0)
+#define SPI6_REG_RESET()        do {    (RCC->APB2RSTR |= BIT20) ;  (RCC->APB2RSTR &= ~BIT20) ;     } while (0)
 
 /*
  * IRQ (Interrupt Request) Numbers of STM32F429xx MCU

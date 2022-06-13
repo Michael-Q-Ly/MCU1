@@ -132,11 +132,20 @@ void SPI_Init(SPI_Handle_t *pSPIHandle) {
  * 
  * @return                  none
  * 
- * @note                    none
+ * @note                    Refer to the APB1RSTR and APB2RSTR RCC registers in the RM
  * 
  */
 void SPI_DeInit(SPI_RegDef_t *pSPIx) {
-
+        // Select which SPI peripheral to deinitialize
+        switch ((unsigned long int) pSPIx) {
+                case SPI1_BASE_ADDR:        SPI1_REG_RESET() ;          break ;
+                case SPI2_BASE_ADDR:        SPI2_REG_RESET() ;          break ;
+                case SPI3_BASE_ADDR:        SPI3_REG_RESET() ;          break ;
+                case SPI4_BASE_ADDR:        SPI4_REG_RESET() ;          break ;
+                case SPI5_BASE_ADDR:        SPI5_REG_RESET() ;          break ;
+                case SPI6_BASE_ADDR:        SPI6_REG_RESET() ;          break ;
+                default:                    return ;                    break ;         // TODO: return error or cause a user fault
+        }
 }
 
 
