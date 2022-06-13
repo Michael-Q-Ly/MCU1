@@ -81,7 +81,50 @@ void SPI_PeriClockControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
  * 
  */
 void SPI_Init(SPI_Handle_t *pSPIHandle) {
+    // Configure the SPI_CR1 register
+    uint32_t tempReg = 0 ;
 
+    // 1. Configure the device mode
+    tempReg |=  pSPIHandle->SPIConfig.SPI_DeviceMode << BIT2 ;
+
+    // 2. Configure the bus mode
+    switch (pSPIHandle->SPIConfig.SPI_BusConfig) {
+        case SPI_BUS_CONFIG_FD:
+            // BIDI mode should be cleared
+            // TODO: Replace hard-coded value (BITx) with a better macro that describes what we are doing
+            tempReg &= ~(1 << BIT15) ;
+            break ;
+        case SPI_BUS_CONFIG_HD:
+            // BIDI mode should be set
+            // TODO: Replace hard-coded value (BITx) with a better macro that describes what we are doing
+            tempReg |= (1 << BIT15) ;
+            break ;
+        case SPI_BUS_CONFIG_SIMPLEX_RXONLY:
+            // BIDI mode should be cleared and RXONLY bit must be set
+            // TODO: Replace hard-coded value (BITx) with a better macro that describes what we are doing
+            tempReg &= ~(1 << BIT15) ;
+            tempReg |= (1 << BIT10) ;
+            break ;
+        default:
+            // Set as Full Duplex
+            // TODO: Replace hard-coded value (BITx) with a better macro that describes what we are doing
+            tempReg &= ~(1 << BIT15) ;
+            break ;
+    }
+
+    // 3. configure the SPI serial clock speed (baud rate)
+    tempReg |= pSPIHandle->SPIConfig.SPI_SclkSpeed << BIT3 ;    // baud rate located at 3rd bit
+
+    // 4. Configure the DFF
+    tempReg |= pSPIHandle->SPIConfig.SPI_DFF << BIT11 ;         // bit 11 of SPI_CR1
+
+    // 5. Configure the CPOL
+    tempReg |= pSPIHandle->SPIConfig.SPI_CPOL << BIT1 ;
+
+    //6. Configure the CPHA
+    tempReg |= pSPIHandle->SPIConfig.SPI_CPHA << BIT0 ;
+
+    pSPIHandle->pSPIx->CR1 = tempReg ;
 }
 
 /****************************************************************************************************
