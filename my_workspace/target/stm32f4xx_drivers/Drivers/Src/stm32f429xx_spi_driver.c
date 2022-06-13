@@ -122,11 +122,10 @@ void SPI_Init(SPI_Handle_t *pSPIHandle) {
     //6. Configure the CPHA
     tempReg |= pSPIHandle->SPIConfig.SPI_CPHA << SPI_CR1_CPHA ;
 
-    // 7, Configure the SSM
+    // 7. Configure the SSM
     tempReg |= pSPIHandle->SPIConfig.SPI_SSM << SPI_CR1_SSM ;
 
     pSPIHandle->pSPIx->CR1 = tempReg ;
-
 }
 
 /****************************************************************************************************
@@ -144,13 +143,13 @@ void SPI_Init(SPI_Handle_t *pSPIHandle) {
 void SPI_DeInit(SPI_RegDef_t *pSPIx) {
     // Select which SPI peripheral to deinitialize
     switch ((unsigned long int) pSPIx) {
-            case SPI1_BASE_ADDR:        SPI1_REG_RESET() ;          break ;
-            case SPI2_BASE_ADDR:        SPI2_REG_RESET() ;          break ;
-            case SPI3_BASE_ADDR:        SPI3_REG_RESET() ;          break ;
-            case SPI4_BASE_ADDR:        SPI4_REG_RESET() ;          break ;
-            case SPI5_BASE_ADDR:        SPI5_REG_RESET() ;          break ;
-            case SPI6_BASE_ADDR:        SPI6_REG_RESET() ;          break ;
-            default:                    return ;                    break ;         // TODO: return error or cause a user fault
+        case SPI1_BASE_ADDR:        SPI1_REG_RESET() ;          break ;
+        case SPI2_BASE_ADDR:        SPI2_REG_RESET() ;          break ;
+        case SPI3_BASE_ADDR:        SPI3_REG_RESET() ;          break ;
+        case SPI4_BASE_ADDR:        SPI4_REG_RESET() ;          break ;
+        case SPI5_BASE_ADDR:        SPI5_REG_RESET() ;          break ;
+        case SPI6_BASE_ADDR:        SPI6_REG_RESET() ;          break ;
+        default:                    return ;                    break ;         // TODO: return error or cause a user fault
     }
 }
 
@@ -205,18 +204,18 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len) {
         while (SPI_GetFlagStatus(pSPIx, SPI_TXE_FLAG) == FLAG_RESET) ;
 
         // Check if the DFF bit is set for 8 or 16-bits
-        if (pSPIx->CR1 != SPI_CR1_DFF) {
-            // 8-bit DFF
-            pSPIx->DR = *pTxBuffer ;
-            pTxBuffer++ ;
-            len-- ;
-        }
-        else {
+        if (pSPIx->CR1 & (1 << SPI_CR1_DFF)) {
             // 16-bit DFF
             pSPIx->DR = (*(uint16_t*) pTxBuffer) ;
+            len-- ;
+            len-- ;
             (uint16_t*) pTxBuffer++ ;
+        }
+        else {
+            // 8-bit DFF
+            pSPIx->DR = *pTxBuffer ;
             len-- ;
-            len-- ;
+            pTxBuffer++ ;
         }
     }
 }
@@ -320,5 +319,27 @@ void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
     }
     else {
         pSPIx->CR1 &= ~(1 << SPI_CR1_SPE) ;
+    }
+}
+
+/****************************************************************************************************
+ * @fn                      SPI_SSIConfig
+ * 
+ * @brief                   Sets or clears the SPI slave/peripheral interrupt
+ * 
+ * @param pSPIx             Base address of the SPI peripheral
+ * @param EnorDi            ENABLE and DISABLE macros
+ * 
+ * @return                  none
+ * 
+ * @note                    none
+ * 
+ */
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
+    if (EnorDi) {
+        pSPIx->CR1 |= (1 << SPI_CR1_SSI) ;
+    }
+    else {
+        pSPIx->CR1 &= ~(1 << SPI_CR1_SSI) ;
     }
 }

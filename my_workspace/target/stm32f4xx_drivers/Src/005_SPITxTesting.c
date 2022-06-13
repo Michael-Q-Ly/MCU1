@@ -26,15 +26,24 @@ void SPI2_Inits(void) ;
 int main(void) {
     // Configure GPIO to behave as SPI2 pins
     SPI2_GPIOInits() ;
+
     // Initialize SPI2 peripheral parameters
     SPI2_Inits() ;
+
+    // Enable SSI so that we stay in single-controller/master mode. This makes NSS signal internally high and avoids MODF error
+    SPI_SSIConfig(SPI2, ENABLE) ;
+
     // Enable the SPI2 peripheral
     SPI_PeripheralControl(SPI2, ENABLE) ;
 
     // Create a message to transmit
     char const *user_data = "Hello world" ;
-    // Transmit the message
+
+    // Transmit the data
     SPI_SendData(SPI2, (uint8_t*) user_data, strlen(user_data)) ;
+
+    // Disable the SPI2 peripheral
+    SPI_PeripheralControl(SPI2, DISABLE) ;
 
     while (1) ;
 
@@ -57,6 +66,8 @@ void SPI2_GPIOInits(void) {
      */
 
     GPIO_Handle_t SPIPins ;
+    memset(&SPIPins, 0, sizeof(SPIPins)) ;
+
     SPIPins.pGPIOx = GPIOB ;
     SPIPins.GPIO_PinConfig.GPIO_PinMode         = GPIO_MODE_ALT_FUN ;
     SPIPins.GPIO_PinConfig.GPIO_PinSpeed        = GPIO_SPEED_FAST ;
@@ -89,12 +100,19 @@ void SPI2_GPIOInits(void) {
     // GPIO_Init(&SPIPins) ;
 }
 
-/**
- * @brief Initializes SPI2 peripheral
+/****************************************************************************************************
+ * @fn                  SPI2_Inits
+ * 
+ * @brief               Initializes SPI2 peripheral
+ * 
+ * @return              none
+ * 
+ * @note                none
  * 
  */
 void SPI2_Inits(void) {
     SPI_Handle_t SPI2Handle ;
+    memset(&SPI2Handle, 0, sizeof(SPI2Handle)) ;
 
     SPI2Handle.pSPIx = SPI2 ;
     SPI2Handle.SPIConfig.SPI_DeviceMode     = SPI_DEVICE_MODE_CONTROLLER ;
