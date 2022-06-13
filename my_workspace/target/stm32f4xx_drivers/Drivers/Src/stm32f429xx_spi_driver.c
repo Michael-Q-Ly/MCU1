@@ -19,7 +19,6 @@
  * Peripheral clock setup
  */
 
-
 /****************************************************************************************************
  * @fn                  SPI_PeriClockControl
  * 
@@ -36,7 +35,7 @@
 void SPI_PeriClockControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
     // If enabling,
     if (EnorDi == ENABLE) {
-        // Check which SPI peripheral and enable
+        // Select which SPI peripheral and enable
         switch ((unsigned long int) pSPIx) {
                 case SPI1_BASE_ADDR:        SPI1_PCLK_EN() ;        break ;
                 case SPI2_BASE_ADDR:        SPI2_PCLK_EN() ;        break ;
@@ -136,16 +135,20 @@ void SPI_Init(SPI_Handle_t *pSPIHandle) {
  * 
  */
 void SPI_DeInit(SPI_RegDef_t *pSPIx) {
-        // Select which SPI peripheral to deinitialize
-        switch ((unsigned long int) pSPIx) {
-                case SPI1_BASE_ADDR:        SPI1_REG_RESET() ;          break ;
-                case SPI2_BASE_ADDR:        SPI2_REG_RESET() ;          break ;
-                case SPI3_BASE_ADDR:        SPI3_REG_RESET() ;          break ;
-                case SPI4_BASE_ADDR:        SPI4_REG_RESET() ;          break ;
-                case SPI5_BASE_ADDR:        SPI5_REG_RESET() ;          break ;
-                case SPI6_BASE_ADDR:        SPI6_REG_RESET() ;          break ;
-                default:                    return ;                    break ;         // TODO: return error or cause a user fault
-        }
+    // Clear the SPI enable bit in CR1
+    pSPIx->CR1 &= ~(SPI_CR1_SPE) ;
+#ifdef later
+    // Select which SPI peripheral to deinitialize
+    switch ((unsigned long int) pSPIx) {
+            case SPI1_BASE_ADDR:        SPI1_REG_RESET() ;          break ;
+            case SPI2_BASE_ADDR:        SPI2_REG_RESET() ;          break ;
+            case SPI3_BASE_ADDR:        SPI3_REG_RESET() ;          break ;
+            case SPI4_BASE_ADDR:        SPI4_REG_RESET() ;          break ;
+            case SPI5_BASE_ADDR:        SPI5_REG_RESET() ;          break ;
+            case SPI6_BASE_ADDR:        SPI6_REG_RESET() ;          break ;
+            default:                    return ;                    break ;         // TODO: return error or cause a user fault
+    }
+#endif /* later */
 }
 
 
@@ -169,7 +172,6 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx) {
  * 
  */
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len) {
-
 }
 
 /****************************************************************************************************
