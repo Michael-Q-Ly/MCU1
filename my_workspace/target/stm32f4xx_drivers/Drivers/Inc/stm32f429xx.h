@@ -528,4 +528,53 @@ typedef struct {
 #define END_BIT_OF_ICER7            (START_BIT_OF_ICER7 + SIZE_OF_ICERx_REG - 1)
 
 
+/****************************************************************************************************
+ *                            Bit position definitions of SPI peripheral                            *
+ ***************************************************************************************************/
+
+/*
+ * Bit position definitions of SPI_CR1
+ */
+
+#define SPI_CR1_CPHA                0           /*!< Clock phase >*/
+#define SPI_CR1_CPOL                1           /*!< Clock polarity >*/
+#define SPI_CR1_MSTR                2           /*!< Controller (master) selection >*/
+#define SPI_CR1_BR                  3           /*!< Baud rate control >*/
+#define SPI_CR1_SPE                 6           /*!< SPI enable >*/
+#define SPI_CR1_LSBFIRST            7           /*!< Frame Format >*/
+#define SPI_CR1_SSI                 8           /*!< Internal peripheral (slave) select >*/
+#define SPI_CR1_SSM                 9           /*!< Software peripheral (slave) management >*/
+#define SPI_CR1_RXONLY              10          /*!< Receive only >*/
+#define SPI_CR1_DFF                 11          /*!< Data frame format >*/
+#define SPI_CR1_CRCNEXT             12          /*!< CRC transfer next >*/
+#define SPI_CR1_CRCEN               13          /*!< Hardware CRC calculation enable >*/
+#define SPI_CR1_BIDIOE              14          /*!< Output enable in bidirectional mode >*/
+#define SPI_CR1_BIDIMODE            15          /*!< Bidirectional data mode enable >*/
+
+/*
+ * Bit position definitions of SPI_CR2
+ */
+
+#define SPI_CR2_RXDMAEN             0           /*!< Rx buffer DMA enable >*/
+#define SPI_CR2_TXDMAEN             1           /*!< Tx buffer DMA enable >*/
+#define SPI_CR2_SSOE                2           /*!< SS output enable >*/
+#define SPI_CR2_FRF                 4           /*!< Frame format >*/
+#define SPI_CR2_ERRIE               5           /*!< Error interrupt enable >*/
+#define SPI_CR2_RXNEIE              6           /*!< RX buffer not empty interrupt enable >*/
+#define SPI_CR2_TXEIE               7           /*!< Tx buffer empty interrupt enable >*/
+
+/*
+ * Bit position definitions of SPI_SR
+ */
+
+#define SPI_SR_RXNE                 0           /*!< Receive buffer not empty >*/
+#define SPI_SR_TXE                  1           /*!< Transmit buffer empty >*/
+#define SPI_SR_CHSIDE               2           /*!< Channel side >*/
+#define SPI_SR_UDR                  3           /*!< Underrun flag >*/
+#define SPI_SR_CRCERR               4           /*!< CRC error flag >*/
+#define SPI_SR_MODF                 5           /*!< Mode fault >*/
+#define SPI_SR_OVR                  6           /*!< Overrun flag >*/
+#define SPI_SR_BSY                  7           /*!< Busy flag >*/
+#define SPI_SR_FRE                  8           /*!< Frame format error >*/
+
 #endif /* _STM32F29XX_H_ */
