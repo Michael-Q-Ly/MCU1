@@ -18,12 +18,24 @@
 #include "stm32f429xx.h"
 #include "stm32f429xx_gpio_driver.h"
 #include "stm32f429xx_spi_driver.h"
+#include <string.h>
 
 void SPI2_GPIOInits(void) ;
-void SPI2_inits(void) ;
+void SPI2_Inits(void) ;
 
 int main(void) {
+    // Configure GPIO to behave as SPI2 pins
     SPI2_GPIOInits() ;
+    // Initialize SPI2 peripheral parameters
+    SPI2_Inits() ;
+
+    // Create a message to transmit
+    char const *user_data = "Hello world" ;
+    // Transmit the message
+    SPI_SendData(SPI2, (uint8_t*) user_data, strlen(user_data)) ;
+
+    while (1) ;
+
     return 0 ;
 }
 
@@ -55,25 +67,31 @@ void SPI2_GPIOInits(void) {
      * Configure the SPI2 pins
      */
 
-    // NSS
-    SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12 ;
-    GPIO_Init(&SPIPins) ;
     // SCK
     SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_13 ;
     GPIO_Init(&SPIPins) ;
-    // MISO
-    SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_14 ;
-    GPIO_Init(&SPIPins) ;
+
     // MOSI
     SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_15 ;
     GPIO_Init(&SPIPins) ;
+
+    /*
+     * Disabled for this particular application since there is no peripheral device
+     */
+
+    // // MISO
+    // SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_14 ;
+    // GPIO_Init(&SPIPins) ;
+    // // NSS
+    // SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12 ;
+    // GPIO_Init(&SPIPins) ;
 }
 
 /**
  * @brief Initializes SPI2 peripheral
  * 
  */
-void SPI2_inits(void) {
+void SPI2_Inits(void) {
     SPI_Handle_t SPI2Handle ;
 
     SPI2Handle.pSPIx = SPI2 ;
