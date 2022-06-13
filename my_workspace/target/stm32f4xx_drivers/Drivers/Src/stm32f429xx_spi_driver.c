@@ -138,9 +138,6 @@ void SPI_Init(SPI_Handle_t *pSPIHandle) {
  * 
  */
 void SPI_DeInit(SPI_RegDef_t *pSPIx) {
-    // Clear the SPI enable bit in CR1
-    pSPIx->CR1 &= ~(SPI_CR1_SPE) ;
-#ifdef later
     // Select which SPI peripheral to deinitialize
     switch ((unsigned long int) pSPIx) {
             case SPI1_BASE_ADDR:        SPI1_REG_RESET() ;          break ;
@@ -151,7 +148,6 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx) {
             case SPI6_BASE_ADDR:        SPI6_REG_RESET() ;          break ;
             default:                    return ;                    break ;         // TODO: return error or cause a user fault
     }
-#endif /* later */
 }
 
 
