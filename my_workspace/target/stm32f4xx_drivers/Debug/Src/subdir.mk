@@ -5,15 +5,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Src/004_ButtonInterrupt.c \
+../Src/005_SPITxTesting.c \
 ../Src/sysmem.c 
 
 OBJS += \
-./Src/004_ButtonInterrupt.o \
+./Src/005_SPITxTesting.o \
 ./Src/sysmem.o 
 
 C_DEPS += \
-./Src/004_ButtonInterrupt.d \
+./Src/005_SPITxTesting.d \
 ./Src/sysmem.d 
 
 
@@ -24,7 +24,7 @@ Src/%.o: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/004_ButtonInterrupt.d ./Src/004_ButtonInterrupt.o ./Src/sysmem.d ./Src/sysmem.o
+	-$(RM) ./Src/005_SPITxTesting.d ./Src/005_SPITxTesting.o ./Src/sysmem.d ./Src/sysmem.o
 
 .PHONY: clean-Src
 
