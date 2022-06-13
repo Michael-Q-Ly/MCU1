@@ -122,7 +122,11 @@ void SPI_Init(SPI_Handle_t *pSPIHandle) {
     //6. Configure the CPHA
     tempReg |= pSPIHandle->SPIConfig.SPI_CPHA << SPI_CR1_CPHA ;
 
+    // 7, Configure the SSM
+    tempReg |= pSPIHandle->SPIConfig.SPI_SSM << SPI_CR1_SSM ;
+
     pSPIHandle->pSPIx->CR1 = tempReg ;
+
 }
 
 /****************************************************************************************************
@@ -297,6 +301,19 @@ void SPI_IRQHandler(SPI_Handle_t *pHandle) {
  * Other peripheral control APIs
  */
 
+/****************************************************************************************************
+ * @fn                      SPI_PeripheralControl
+ * 
+ * @brief                   Sets or clears the SPI enable bit of the SPI_CR1 register
+ * 
+ * @param pSPIx             Base address of the SPI peripheral
+ * @param EnorDi            ENABLE and DISABLE macros
+ * 
+ * @return                  none
+ * 
+ * @note                    none
+ * 
+ */
 void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
     if (EnorDi) {
         pSPIx->CR1 |= (1 << SPI_CR1_SPE) ;
