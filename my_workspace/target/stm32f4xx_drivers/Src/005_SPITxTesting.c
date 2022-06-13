@@ -28,6 +28,8 @@ int main(void) {
     SPI2_GPIOInits() ;
     // Initialize SPI2 peripheral parameters
     SPI2_Inits() ;
+    // Enable the SPI2 peripheral
+    SPI_PeripheralControl(SPI2, ENABLE) ;
 
     // Create a message to transmit
     char const *user_data = "Hello world" ;

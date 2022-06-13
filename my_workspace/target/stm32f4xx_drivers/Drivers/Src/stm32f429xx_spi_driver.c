@@ -296,3 +296,12 @@ void SPI_IRQHandler(SPI_Handle_t *pHandle) {
 /*
  * Other peripheral control APIs
  */
+
+void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
+    if (EnorDi) {
+        pSPIx->CR1 |= (1 << SPI_CR1_SPE) ;
+    }
+    else {
+        pSPIx->CR1 &= ~(1 << SPI_CR1_SPE) ;
+    }
+}
