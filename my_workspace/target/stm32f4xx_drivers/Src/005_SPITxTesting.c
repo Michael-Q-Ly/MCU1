@@ -68,7 +68,7 @@ void SPI2_GPIOInits(void) {
     GPIO_Handle_t SPIPins ;
     memset(&SPIPins, 0, sizeof(SPIPins)) ;
 
-    SPIPins.pGPIOx = GPIOB ;
+    // SPIPins.pGPIOx = GPIOB ;
     SPIPins.GPIO_PinConfig.GPIO_PinMode         = GPIO_MODE_ALT_FUN ;
     SPIPins.GPIO_PinConfig.GPIO_PinSpeed        = GPIO_SPEED_FAST ;
     SPIPins.GPIO_PinConfig.GPIO_PinPuPdCtrl     = GPIO_NO_PUPD ;
@@ -81,12 +81,23 @@ void SPI2_GPIOInits(void) {
      */
 
     // SCK
+    SPIPins.pGPIOx = GPIOB ;
+    SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_10 ;
+    GPIO_Init(&SPIPins) ;
+
+    // MOSI
+    SPIPins.pGPIOx = GPIOC ;
+    SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_3 ;
+    GPIO_Init(&SPIPins) ;
+#ifdef later
+    // SCK
     SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_13 ;
     GPIO_Init(&SPIPins) ;
 
     // MOSI
     SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_15 ;
     GPIO_Init(&SPIPins) ;
+#endif /* later */
 
     /*
      * Disabled for this particular application since there is no peripheral device
@@ -119,7 +130,7 @@ void SPI2_Inits(void) {
     SPI2Handle.SPIConfig.SPI_BusConfig      = SPI_BUS_CONFIG_FD ;
     SPI2Handle.SPIConfig.SPI_SclkSpeed      = SPI_SCLK_SPEED_DIV2 ;                     /* Generates SCK of 8 MHz */
     SPI2Handle.SPIConfig.SPI_DFF            = SPI_DFF_8BITS ;
-    SPI2Handle.SPIConfig.SPI_CPOL           = SPI_CPOL_LOW ;
+    SPI2Handle.SPIConfig.SPI_CPOL           = SPI_CPOL_HIGH ;
     SPI2Handle.SPIConfig.SPI_CPHA           = SPI_CPHA_LOW ;
     SPI2Handle.SPIConfig.SPI_SSM            = SPI_SSM_EN ;                              /* Software slave management enabled for NSS pin */
 

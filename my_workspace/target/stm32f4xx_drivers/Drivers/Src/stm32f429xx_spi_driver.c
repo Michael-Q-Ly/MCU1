@@ -156,31 +156,6 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx) {
 
 
 /*
- * Flag status
- */
-
-/****************************************************************************************************
- * @fn                      SPI_GetFlagStatus
- * 
- * @brief                   Returns true if status flag is set, and 0 if it is not set
- * 
- * @param pSPIx             Base address of an SPI peripheral
- * @param FlagName          Status register flag that is to be checked
- * 
- * @return uint8_t          0 or 1
- * 
- * @note                    none
- */
-uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName) {
-    if (pSPIx->SR & FlagName) {
-        return FLAG_SET ;
-    }
-    return FLAG_RESET ;
-}
-
-
-
-/*
  * Data send and receive
  */
 
@@ -206,7 +181,7 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len) {
         // Check if the DFF bit is set for 8 or 16-bits
         if (pSPIx->CR1 & (1 << SPI_CR1_DFF)) {
             // 16-bit DFF
-            pSPIx->DR = (*(uint16_t*) pTxBuffer) ;
+            pSPIx->DR = *((uint16_t*) pTxBuffer) ;
             len-- ;
             len-- ;
             (uint16_t*) pTxBuffer++ ;
@@ -218,6 +193,13 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len) {
             pTxBuffer++ ;
         }
     }
+    // Wait for TXE bit to be set -> This will indicate the Tx buffer is empty
+    // while (SPI_GetFlagStatus(SPI2, SPI_TXE_FLAG) == FLAG_RESET) ;
+    // Wait for BSY bit to reset  -> This will indicate that SPI is not busy in communication
+    while (SPI_GetFlagStatus(SPI2, SPI_BSY_FLAG) == FLAG_SET) ;
+    // Clear the OVR flag by reading DR and SR
+    uint8_t temp = pSPIx->DR ;
+    temp = pSPIx->SR ;
 }
 
 /****************************************************************************************************
@@ -342,4 +324,45 @@ void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
     else {
         pSPIx->CR1 &= ~(1 << SPI_CR1_SSI) ;
     }
+}
+
+/****************************************************************************************************
+ * @fn                      SPI_SSOEConfig
+ * 
+ * @brief                   Enables or disables SPI_CR2's SSOE
+ * 
+ * @param pSPIx             Base address of the SPI peripheral
+ * @param EnorDi            ENABLE and DISABLE macros
+ * 
+ * @return                  none
+ * 
+ * @note                    none
+ * 
+ */
+void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
+    if (EnorDi == ENABLE) {
+        pSPIx->CR2 |= (1 << SPI_CR2_SSOE) ;
+    }
+    else {
+        pSPIx->CR2 &= ~(1 << SPI_CR2_SSOE) ;
+    }
+}
+
+/****************************************************************************************************
+ * @fn                      SPI_GetFlagStatus
+ * 
+ * @brief                   Returns true if status flag is set, and 0 if it is not set
+ * 
+ * @param pSPIx             Base address of an SPI peripheral
+ * @param FlagName          Status register flag that is to be checked
+ * 
+ * @return uint8_t          0 or 1
+ * 
+ * @note                    none
+ */
+uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName) {
+    if (pSPIx->SR & FlagName) {
+        return FLAG_SET ;
+    }
+    return FLAG_RESET ;
 }
