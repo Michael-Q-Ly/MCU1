@@ -140,5 +140,16 @@ void SPI2_Inits(void) {
  * 
  */
 void GPIO_ButtonInit(void) {
+    GPIO_Handle_t GPIOHandle ;
+    memset(&GPIOHandle, 0, sizeof(GPIOHandle)) ;
 
+    GPIOHandle.pGPIOx = GPIOA ;
+
+    GPIOHandle.GPIO_PinConfig.GPIO_PinNumber    = GPIO_PIN_NO_0 ;
+    GPIOHandle.GPIO_PinConfig.GPIO_PinMode      = GPIO_MODE_INPUT ;
+    GPIOHandle.GPIO_PinConfig.GPIO_PinSpeed     = GPIO_SPEED_FAST ;
+    GPIOHandle.GPIO_PinConfig.GPIO_PinPuPdCtrl  = GPIO_NO_PUPD ;
+    GPIOHandle.GPIO_PinConfig.GPIO_PinOPType    = GPIO_OP_TYPE_PP ;
+
+    GPIO_Init(&GPIOHandle) ;
 }
