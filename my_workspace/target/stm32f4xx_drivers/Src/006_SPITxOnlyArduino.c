@@ -16,6 +16,7 @@
 void SPI2_GPIOInits(void) ;
 void SPI2_Inits(void) ;
 void GPIO_ButtonInit(void) ;
+void delay(void) ;
 
 int main(void) {
     // Configure GPIO button
@@ -35,20 +36,27 @@ int main(void) {
      */
     SPI_SSOEConfig(SPI2, ENABLE) ;
 
-    // Enable the SPI2 peripheral
-    SPI_PeripheralControl(SPI2, ENABLE) ;
+    while (1) {
+        // Wait until a button press
+        while (!GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0)) ;
 
-    // Create a message to transmit
-    char const *user_data = "Hello world" ;
+        // Debounce button press with software delay for clean read
+        delay() ;
 
-    // Transmit the data
-    SPI_SendData(SPI2, (uint8_t*) user_data, strlen(user_data)) ;
+        // Enable the SPI2 peripheral
+        SPI_PeripheralControl(SPI2, ENABLE) ;
 
-    // Disable the SPI2 peripheral
-    SPI_PeripheralControl(SPI2, DISABLE) ;
+        // Create a message to transmit
+        char const *user_data = "Hello world" ;
 
-    while (1) ;
+        // Transmit the data
+        SPI_SendData(SPI2, (uint8_t*) user_data, strlen(user_data)) ;
 
+        // Disable the SPI2 peripheral
+        SPI_PeripheralControl(SPI2, DISABLE) ;
+    }
+
+    // Program should never reach here!
     return 0 ;
 }
 
@@ -144,7 +152,6 @@ void GPIO_ButtonInit(void) {
     memset(&GPIOHandle, 0, sizeof(GPIOHandle)) ;
 
     GPIOHandle.pGPIOx = GPIOA ;
-
     GPIOHandle.GPIO_PinConfig.GPIO_PinNumber    = GPIO_PIN_NO_0 ;
     GPIOHandle.GPIO_PinConfig.GPIO_PinMode      = GPIO_MODE_INPUT ;
     GPIOHandle.GPIO_PinConfig.GPIO_PinSpeed     = GPIO_SPEED_FAST ;
@@ -152,4 +159,17 @@ void GPIO_ButtonInit(void) {
     GPIOHandle.GPIO_PinConfig.GPIO_PinOPType    = GPIO_OP_TYPE_PP ;
 
     GPIO_Init(&GPIOHandle) ;
+}
+/****************************************************************************************************
+ * @fn          delay
+ * 
+ * @brief       Software delay; can be used for debouncing
+ * 
+ * @return      none
+ * 
+ * @note        none
+ * 
+ */
+void delay(void) {
+    for (uint32_t i = 0 ; i < 500000/2 ; i++) ;
 }
