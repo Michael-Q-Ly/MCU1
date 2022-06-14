@@ -19,6 +19,9 @@ void GPIO_ButtonInit(void) ;
 void delay(void) ;
 
 int main(void) {
+    // Create a message to transmit
+    char const *user_data = "Hello world" ;
+
     // Configure GPIO button
     GPIO_ButtonInit() ; 
 
@@ -46,11 +49,10 @@ int main(void) {
         // Enable the SPI2 peripheral
         SPI_PeripheralControl(SPI2, ENABLE) ;
 
-        // Create a message to transmit
-        char const *user_data = "Hello world" ;
-
-        // Transmit the data
-        SPI_SendData(SPI2, (uint8_t*) user_data, strlen(user_data)) ;
+        // First send length information
+        uint8_t dataLen = strlen(user_data) ;
+        // to send 1 byte of data
+        SPI_SendData(SPI2, &dataLen, 1) ;
 
         // Disable the SPI2 peripheral
         SPI_PeripheralControl(SPI2, DISABLE) ;
