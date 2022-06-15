@@ -49,10 +49,21 @@ int main(void) {
         // Enable the SPI2 peripheral
         SPI_PeripheralControl(SPI2, ENABLE) ;
 
-        // First send length information
+        // First send length information so that the peripheral knows how long the message is
         uint8_t dataLen = strlen(user_data) ;
-        // to send 1 byte of data
+        // to send 1 byte of data, which turns out to be 0x0B, the read opcode
         SPI_SendData(SPI2, &dataLen, 1) ;
+
+        // Transmit data
+        SPI_SendData(SPI2, (uint8_t*) user_data, strlen(user_data)) ;
+
+        // Wait for BSY bit to reset  -> This will indicate that SPI is not busy in communication
+        while (SPI_GetFlagStatus(SPI2, SPI_BSY_FLAG) == FLAG_SET) ;
+
+        // Clear the OVR flag by reading DR and SR
+        uint8_t temp = SPI2->DR ;
+        temp = SPI2->SR ;
+        (void) temp ;                           /*!< temp is not always used, so typecast will avoid warning on compilation for ununsed variable >*/
 
         // Disable the SPI2 peripheral
         SPI_PeripheralControl(SPI2, DISABLE) ;
@@ -93,9 +104,21 @@ void SPI2_GPIOInits(void) {
      */
 
     // NSS
-    SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12 ;
+    SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_9 ;
+    // SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12 ;
     GPIO_Init(&SPIPins) ;
 
+    // SCK
+    SPIPins.pGPIOx = GPIOB ;
+    SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_10 ;
+    GPIO_Init(&SPIPins) ;
+
+    // MOSI
+    SPIPins.pGPIOx = GPIOC ;
+    SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_3 ;
+    GPIO_Init(&SPIPins) ;
+
+#ifdef later
     // SCK
     SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_13 ;
     GPIO_Init(&SPIPins) ;
@@ -103,6 +126,7 @@ void SPI2_GPIOInits(void) {
     // MOSI
     SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_15 ;
     GPIO_Init(&SPIPins) ;
+#endif /* later */
 
     /*
      * Disabled for this particular application since there is no peripheral device
@@ -132,7 +156,7 @@ void SPI2_Inits(void) {
     SPI2Handle.SPIConfig.SPI_BusConfig      = SPI_BUS_CONFIG_FD ;
     SPI2Handle.SPIConfig.SPI_SclkSpeed      = SPI_SCLK_SPEED_DIV8 ;                     /* Generates SCK of 2 MHz */
     SPI2Handle.SPIConfig.SPI_DFF            = SPI_DFF_8BITS ;
-    SPI2Handle.SPIConfig.SPI_CPOL           = SPI_CPOL_HIGH ;
+    SPI2Handle.SPIConfig.SPI_CPOL           = SPI_CPOL_LOW ;
     SPI2Handle.SPIConfig.SPI_CPHA           = SPI_CPHA_LOW ;
     SPI2Handle.SPIConfig.SPI_SSM            = SPI_SSM_DI ;                              /* Hardware slave management enabled for NSS pin */
 
@@ -158,7 +182,6 @@ void GPIO_ButtonInit(void) {
     GPIOHandle.GPIO_PinConfig.GPIO_PinMode      = GPIO_MODE_INPUT ;
     GPIOHandle.GPIO_PinConfig.GPIO_PinSpeed     = GPIO_SPEED_FAST ;
     GPIOHandle.GPIO_PinConfig.GPIO_PinPuPdCtrl  = GPIO_NO_PUPD ;
-    GPIOHandle.GPIO_PinConfig.GPIO_PinOPType    = GPIO_OP_TYPE_PP ;
 
     GPIO_Init(&GPIOHandle) ;
 }

@@ -193,12 +193,6 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len) {
             pTxBuffer++ ;
         }
     }
-    // Wait for BSY bit to reset  -> This will indicate that SPI is not busy in communication
-    while (SPI_GetFlagStatus(SPI2, SPI_BSY_FLAG) == FLAG_SET) ;
-    // Clear the OVR flag by reading DR and SR
-    uint8_t temp = pSPIx->DR ;
-    temp = pSPIx->SR ;
-    (void) temp ;           /*!< temp is not always used, so typecast will avoid warning on compilation for ununsed variable >*/
 }
 
 /****************************************************************************************************
