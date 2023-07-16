@@ -1,0 +1,5 @@
+006_SPITxOnlyArduino.c:21:5:main	3
+006_SPITxOnlyArduino.c:85:6:SPI2_GPIOInits	1
+006_SPITxOnlyArduino.c:132:6:SPI2_Inits	1
+006_SPITxOnlyArduino.c:158:6:GPIO_ButtonInit	1
+006_SPITxOnlyArduino.c:180:6:delay	2
