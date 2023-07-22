@@ -1,5 +1,5 @@
 "./Drivers/Src/stm32f429xx_gpio_driver.o"
 "./Drivers/Src/stm32f429xx_spi_driver.o"
-"./Src/006_SPITxOnlyArduino.o"
+"./Src/007_SPICmdHandling.o"
 "./Src/sysmem.o"
 "./Startup/startup_stm32f429zitx.o"

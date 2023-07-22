@@ -39,6 +39,7 @@ void SPI2_GPIOInits(void) ;
 void SPI2_Inits(void) ;
 void GPIO_ButtonInit(void) ;
 void delay(void) ;
+uint8_t SPI_VerifyResponse(uint8_t ackByte) ;
 
 int main(void) {
 	/*
@@ -48,9 +49,8 @@ int main(void) {
 	 * PB9  --> SPI2_NSS
 	 * ALT function mode: 5
 	 */
-
-    // Create a message to transmit
-    char const *user_data = "Hello world" ;
+	uint8_t dummyWrite = 0xFF ;
+	uint8_t dummyRead = 0xFF ;
 
     // Configure GPIO button
     GPIO_ButtonInit() ;
@@ -79,23 +79,39 @@ int main(void) {
         // Enable the SPI2 peripheral
         SPI_PeripheralControl(SPI2, ENABLE) ;
 
-        // First send length information so that the peripheral knows how long the message is
-        uint8_t dataLen = strlen(user_data) ;
-        // to send 1 byte of data, which turns out to be 0x0B, the read opcode
-        SPI_SendData(SPI2, &dataLen, 1) ;
+        /* 1. CMD_LED_CTRL <pin_no_1>  	<value_1> */
 
-        // Transmit data
-        SPI_SendData(SPI2, (uint8_t*) user_data, strlen(user_data)) ;
+        uint8_t commandCode = COMMAND_LED_CTRL ;
+        uint8_t ackByte ;
+        uint8_t args[2] ;
 
-        // Wait for BSY bit to reset  -> This will indicate that SPI is not busy in communication
-        while (SPI_GetFlagStatus(SPI2, SPI_BSY_FLAG) == FLAG_SET) ;
+        // Send command
+        SPI_SendData(SPI2, &commandCode, 1) ;
 
-        // Clear the OVR flag by reading DR and SR
-        uint8_t temp __attribute__((unused)) = SPI2->DR ; /* temp is declared, but not referenced */
-        temp = SPI2->SR ;
+        // Perform dummy read to clear RXNE
+        SPI_ReceiveData(SPI2, &dummyRead, 1) ;
 
-        // Disable the SPI2 peripheral
-        SPI_PeripheralControl(SPI2, DISABLE) ;
+        // Send some dummy bits (1 byte) to fetch response from the peripheral
+        SPI_SendData(SPI2, &dummyWrite, 1) ;
+
+        // Receive the ack byte received
+        SPI_ReceiveData(SPI2, &ackByte, 1) ;
+
+        // Verify ack or nack
+        if (SPI_VerifyResponse(ackByte)) {
+        	// Send arguments
+        	args[0] = UNOR3_LED_PIN ;
+        	args[1] = LED_ON ;
+        	SPI_SendData(SPI2, args, 2) ; /* 2 bytes sent */
+			// Wait for BSY bit to reset  -> This will indicate that SPI is not busy in communication
+			while (SPI_GetFlagStatus(SPI2, SPI_BSY_FLAG) == FLAG_SET) ;
+			// Clear the OVR flag by reading DR and SR
+			uint8_t temp __attribute__((unused)) = SPI2->DR ; /* temp is declared, but not referenced */
+			temp = SPI2->SR ;
+        }
+		// Disable the SPI2 peripheral
+		SPI_PeripheralControl(SPI2, DISABLE) ;
+
     }
 
     // Program should never reach here!
@@ -146,7 +162,6 @@ void SPI2_GPIOInits(void) {
     GPIO_Init(&SPIPins) ;
 
     // MISO / CIPO
-    SPIPins.pGPIOx = GPIOB ;
     SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_2 ; /* PB15 did not work */
     GPIO_Init(&SPIPins) ;
 }
@@ -200,15 +215,33 @@ void GPIO_ButtonInit(void) {
     GPIO_Init(&GPIOHandle) ;
 }
 /****************************************************************************************************
- * @fn          delay
+ * @fn          		delay
  *
- * @brief       Software delay; can be used for debouncing
+ * @brief       		Software delay; can be used for debouncing
  *
- * @return      none
+ * @return      		none
  *
- * @note        none
+ * @note        		none
  *
  */
 void delay(void) {
     for (uint32_t i = 0 ; i < 500000/2 ; i++) ;
+}
+
+/**
+ * @fn  				SPI_VerifyResponse(uint8_t)
+ *
+ * @brief 				Verifies what acknowledge byte is returned from peripheral device
+ *
+ * @pre 				Controller sends message to peripheral
+ * @post				Controller Receives message and gets either ack or nack
+ * @param ackByte 		ack or nack
+ */
+uint8_t SPI_VerifyResponse(uint8_t ackByte) {
+	if (ackByte == 0xF5) {
+		// ack
+		return 1 ;
+	}
+	// nack
+	return 0 ;
 }

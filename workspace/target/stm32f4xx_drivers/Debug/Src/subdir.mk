@@ -5,15 +5,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Src/006_SPITxOnlyArduino.c \
+../Src/007_SPICmdHandling.c \
 ../Src/sysmem.c 
 
 OBJS += \
-./Src/006_SPITxOnlyArduino.o \
+./Src/007_SPICmdHandling.o \
 ./Src/sysmem.o 
 
 C_DEPS += \
-./Src/006_SPITxOnlyArduino.d \
+./Src/007_SPICmdHandling.d \
 ./Src/sysmem.d 
 
 
@@ -24,7 +24,7 @@ Src/%.o Src/%.su Src/%.cyclo: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/006_SPITxOnlyArduino.cyclo ./Src/006_SPITxOnlyArduino.d ./Src/006_SPITxOnlyArduino.o ./Src/006_SPITxOnlyArduino.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
+	-$(RM) ./Src/007_SPICmdHandling.cyclo ./Src/007_SPICmdHandling.d ./Src/007_SPICmdHandling.o ./Src/007_SPICmdHandling.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
 
 .PHONY: clean-Src
 
