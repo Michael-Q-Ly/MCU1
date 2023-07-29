@@ -1,6 +1,8 @@
-007_SPICmdHandling.c:46:5:main	7
-007_SPICmdHandling.c:194:6:SPI2_GPIOInits	1
-007_SPICmdHandling.c:242:6:SPI2_Inits	1
-007_SPICmdHandling.c:268:6:GPIO_ButtonInit	1
-007_SPICmdHandling.c:290:6:delay	2
-007_SPICmdHandling.c:303:9:SPI_VerifyResponse	2
+007_SPICmdHandling.c:50:5:main	3
+007_SPICmdHandling.c:132:6:SPI2_GPIOInits	1
+007_SPICmdHandling.c:180:6:SPI2_Inits	1
+007_SPICmdHandling.c:206:6:GPIO_ButtonInit	1
+007_SPICmdHandling.c:228:6:delay	2
+007_SPICmdHandling.c:241:9:SPI_VerifyResponse	2
+007_SPICmdHandling.c:250:6:send_CMD_LED_CTRL	3
+007_SPICmdHandling.c:280:6:send_CMD_SENSOR_READ	3
