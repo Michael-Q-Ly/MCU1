@@ -41,6 +41,7 @@ void SPI2_GPIOInits(void) ;
 void SPI2_Inits(void) ;
 void GPIO_ButtonInit(void) ;
 void delay(void) ;
+void wait_for_button_press(void) ;
 uint8_t SPI_VerifyResponse(uint8_t ackByte) ;
 
 // SPI commands
@@ -80,12 +81,7 @@ int main(void) {
     SPI_SSOEConfig(SPI2, ENABLE) ;
 
     while (1) {
-        // Wait until a button press
-        while (!GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0)) ;
-
-        // Debounce button press with software delay for clean read
-        delay() ;
-
+    	wait_for_button_press() ;
         // Enable the SPI2 peripheral
         SPI_PeripheralControl(SPI2, ENABLE) ;
 
@@ -103,11 +99,7 @@ int main(void) {
         /*          2. CMD_SENSOR_READ <analog_pin_no_1				  */
         /**************************************************************/
 
-        // Wait until a button press
-        while (!GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0)) ;
-
-        // Debounce button press with software delay for clean read
-        delay() ;
+        wait_for_button_press() ;
 
         send_CMD_SENSOR_READ(dummyRead, dummyWrite, &commandCode, &ackByte, args);
 
@@ -238,6 +230,16 @@ void delay(void) {
  * @post				Controller Receives message and gets either ack or nack
  * @param ackByte 		ack or nack
  */
+
+void wait_for_button_press(void) {
+        // Wait until a button press
+        while (!GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0)) ;
+
+        // Debounce button press with software delay for clean read
+        delay() ;
+
+}
+
 uint8_t SPI_VerifyResponse(uint8_t ackByte) {
 	if (ackByte == 0xF5) {
 		// ack
