@@ -35,6 +35,8 @@
 // Arduino LED
 #define UNOR3_LED_PIN 			9
 
+extern void initialise_monitor_handles() ;
+
 void SPI2_GPIOInits(void) ;
 void SPI2_Inits(void) ;
 void GPIO_ButtonInit(void) ;
@@ -42,6 +44,9 @@ void delay(void) ;
 uint8_t SPI_VerifyResponse(uint8_t ackByte) ;
 
 int main(void) {
+	initialise_monitor_handles();
+	printf("Application is running\n") ;
+
 	/*
 	 * PC2  --> SPI2_MISO
 	 * PC3  --> SPI2_MOSI
@@ -60,6 +65,7 @@ int main(void) {
 
     // Initialize SPI2 peripheral parameters
     SPI2_Inits() ;
+	printf("SPI initialization done\n") ;
 
     /*
      * Setting SSOE does NSS output enable.
@@ -101,15 +107,19 @@ int main(void) {
 
         // Verify ack or nack
         if (SPI_VerifyResponse(ackByte)) {
-        	// Send arguments
         	args[0] = UNOR3_LED_PIN ;
         	args[1] = LED_ON ;
+
+        	// Send arguments
         	SPI_SendData(SPI2, args, 2) ; /* 2 bytes sent */
+
 			// Wait for BSY bit to reset  -> This will indicate that SPI is not busy in communication
 			while (SPI_GetFlagStatus(SPI2, SPI_BSY_FLAG) == FLAG_SET) ;
 			// Clear the OVR flag by reading DR and SR
 			uint8_t temp __attribute__((unused)) = SPI2->DR ; /* temp is declared, but not referenced */
 			temp = SPI2->SR ;
+
+			printf("COMMAND_LED_CTRL executed\n") ;
         }
 
         /**************************************************************/
@@ -162,6 +172,8 @@ int main(void) {
 			// Clear the OVR flag by reading DR and SR
 			uint8_t temp __attribute__((unused)) = SPI2->DR ; /* temp is declared, but not referenced */
 			temp = SPI2->SR ;
+
+			printf("CMD_SENSOR_READ %d\n", analogRead) ;
         }
     }
 

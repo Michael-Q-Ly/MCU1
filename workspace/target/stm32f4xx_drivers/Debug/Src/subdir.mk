@@ -5,16 +5,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Src/007_SPICmdHandling.c \
-../Src/sysmem.c 
+../Src/007_SPICmdHandling.c 
 
 OBJS += \
-./Src/007_SPICmdHandling.o \
-./Src/sysmem.o 
+./Src/007_SPICmdHandling.o 
 
 C_DEPS += \
-./Src/007_SPICmdHandling.d \
-./Src/sysmem.d 
+./Src/007_SPICmdHandling.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -24,7 +21,7 @@ Src/%.o Src/%.su Src/%.cyclo: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/007_SPICmdHandling.cyclo ./Src/007_SPICmdHandling.d ./Src/007_SPICmdHandling.o ./Src/007_SPICmdHandling.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
+	-$(RM) ./Src/007_SPICmdHandling.cyclo ./Src/007_SPICmdHandling.d ./Src/007_SPICmdHandling.o ./Src/007_SPICmdHandling.su
 
 .PHONY: clean-Src
 
