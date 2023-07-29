@@ -79,7 +79,9 @@ int main(void) {
         // Enable the SPI2 peripheral
         SPI_PeripheralControl(SPI2, ENABLE) ;
 
-        /* 1. CMD_LED_CTRL <pin_no_1>  	<value_1> */
+        /**************************************************************/
+        /*          * 1. CMD_LED_CTRL <pin_no_1>  	<value_1>         */
+        /**************************************************************/
 
         uint8_t commandCode = COMMAND_LED_CTRL ;
         uint8_t ackByte ;
@@ -109,9 +111,58 @@ int main(void) {
 			uint8_t temp __attribute__((unused)) = SPI2->DR ; /* temp is declared, but not referenced */
 			temp = SPI2->SR ;
         }
-		// Disable the SPI2 peripheral
-		SPI_PeripheralControl(SPI2, DISABLE) ;
 
+        /**************************************************************/
+        /*          2. CMD_SENSOR_READ <analog_pin_no_1				  */
+        /**************************************************************/
+       /*  */
+
+        // Wait until a button press
+        while (!GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0)) ;
+
+        // Debounce button press with software delay for clean read
+        delay() ;
+
+        commandCode = COMMAND_SENSOR_READ ;
+
+        // Send command
+        SPI_SendData(SPI2, &commandCode, 1) ;
+
+        // Perform dummy read to clear RXNE
+        SPI_ReceiveData(SPI2, &dummyRead, 1) ;
+
+        // Send some dummy bits (1 byte) to fetch response from the peripheral
+        SPI_SendData(SPI2, &dummyWrite, 1) ;
+
+        // Receive the ack byte received
+        SPI_ReceiveData(SPI2, &ackByte, 1) ;
+
+        // Verify ack or nack
+        if (SPI_VerifyResponse(ackByte)) {
+        	// Send arguments
+        	args[0] = UNOR3_ANALOG_PIN_NO_0 ;
+
+        	// Send arguments
+        	SPI_SendData(SPI2, args, 1) ; /* 1 byte sent */
+
+			// Do a dummy read to clear off the RXNE
+			SPI_ReceiveData(SPI2, &dummyRead, 1) ;
+
+			// Insert delay so peripheral can have data ready
+			delay();
+
+			// Send some dummy bits (1 byte) to fetch response from the peripheral
+			SPI_SendData(SPI2, &dummyWrite, 1) ;
+
+			uint8_t analogRead ;
+			SPI_ReceiveData(SPI2, &analogRead, 1) ;
+
+			// Wait for BSY bit to reset  -> This will indicate that SPI is not busy in communication
+			while (SPI_GetFlagStatus(SPI2, SPI_BSY_FLAG) == FLAG_SET) ;
+			// Clear the OVR flag by reading DR and SR
+			uint8_t temp __attribute__((unused)) = SPI2->DR ; /* temp is declared, but not referenced */
+			temp = SPI2->SR ;
+        }
     }
 
     // Program should never reach here!
