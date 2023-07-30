@@ -37,21 +37,22 @@
 
 extern void initialise_monitor_handles() ;
 
-void SPI2_GPIOInits(void) ;
-void SPI2_Inits(void) ;
-void GPIO_ButtonInit(void) ;
-void delay(void) ;
-void wait_for_button_press(void) ;
-uint8_t SPI_VerifyResponse(uint8_t ackByte) ;
-void SPI_ResetBusyFlag(void) ;
+static void SPI2_GPIOInits(void) ;
+static void SPI2_Inits(void) ;
+static void GPIO_ButtonInit(void) ;
+static void delay(void) ;
+static void wait_for_button_press(void) ;
+static uint8_t SPI_VerifyResponse(uint8_t ackByte) ;
+static void SPI_ResetBusyFlag(void) ;
 
 // Helper functions
-void dummy_read_write(uint8_t dummyRead, uint8_t dummyWrite) ;
+static void dummy_read_write(uint8_t dummyRead, uint8_t dummyWrite) ;
 
 // SPI commands
-void send_CMD_LED_CTRL(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) ;
-void send_CMD_SENSOR_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) ;
-void send_CMD_LED_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) ;
+static void send_CMD_LED_CTRL(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) ;
+static void send_CMD_SENSOR_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) ;
+static void send_CMD_LED_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) ;
+static void send_CMD_PRINT(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) ;
 
 int main(void) {
 	initialise_monitor_handles();
@@ -95,10 +96,10 @@ int main(void) {
         uint8_t args[2] ;
 
         /**************************************************************/
-        /*          * 1. CMD_LED_CTRL <pin_no_1>  	<value_1>         */
+        /*            1. CMD_LED_CTRL <pin_no_1>  	<value_1>         */
         /**************************************************************/
 
-        send_CMD_LED_CTRL(dummyRead, dummyWrite, &commandCode, &ackByte, args);
+        send_CMD_LED_CTRL(dummyRead, dummyWrite, &commandCode, &ackByte, args) ;
 
         /**************************************************************/
         /*           2. CMD_SENSOR_READ <analog_pin_no_1>			  */
@@ -106,26 +107,24 @@ int main(void) {
 
         wait_for_button_press() ;
         commandCode = COMMAND_SENSOR_READ ;
-        send_CMD_SENSOR_READ(dummyRead, dummyWrite, &commandCode, &ackByte, args);
+        send_CMD_SENSOR_READ(dummyRead, dummyWrite, &commandCode, &ackByte, args) ;
 
         /**************************************************************/
-        /*               *3. CMD_LED_READ <analog_pin_no_1>           */
+        /*                   3. CMD_LED_READ <pin_no_1>               */
         /**************************************************************/
         wait_for_button_press() ;
         commandCode = COMMAND_LED_READ ;
-        send_CMD_LED_READ(dummyRead, dummyWrite, &commandCode, &ackByte, args);
+        send_CMD_LED_READ(dummyRead, dummyWrite, &commandCode, &ackByte, args) ;
 
-#ifdef later
         /**************************************************************/
-        /*                *4. CMD_PRINT <analog_pin_no_1>             */
+        /*              4. CMD_PRINT <len(2)> <message(len)>          */
         /**************************************************************/
 
         wait_for_button_press() ;
         commandCode = COMMAND_PRINT ;
-        send_CMD_PRINT(dummyRead, dummyWrite, &commandCode, &ackByte, args);
-        /*TODO: move this function prototype and make definition */
-void send_CMD_PRINT(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) ;
+        send_CMD_PRINT(dummyRead, dummyWrite, &commandCode, &ackByte, args) ;
 
+#ifdef later
         /**************************************************************/
         /*               *5. CMD_ID_READ <analog_pin_no_1>            */
         /**************************************************************/
@@ -314,7 +313,8 @@ void SPI_ResetBusyFlag() {
  * @brief 				Send first command to peripheral - Turn LED ON
  *
  * @pre 				Wait for user GPIO to be pressed and receive ack
- * @post
+ * @post				Turns LED on from peripheral device
+ *
  * @param dummyRead 	Clears RXNE
  * @param dummyWrite	Fetches response from peripheral device
  * @param commandCode	Code to send to peripheral device
@@ -350,6 +350,7 @@ void send_CMD_LED_CTRL(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const com
  *
  * @pre 				Wait for user GPIO to be pressed and receive ack
  * @post 				Receives analog value back from peripheral device
+ *
  * @param dummyRead 	Clears RXNE
  * @param dummyWrite	Fetches response from peripheral device
  * @param commandCode	Code to send to peripheral device
@@ -436,6 +437,59 @@ void send_CMD_LED_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const com
 		// Wait for BSY bit to reset  -> This will indicate that SPI is not busy in communication
 		SPI_ResetBusyFlag() ;
 
-		printf("CMD_LED_READ %d\n", ledStatus) ;
+		printf("CMD_LED_READ %s\n", ledStatus == LED_ON ? "ON" : "OFF") ;
+	}
+}
+
+/****************************************************************************************************
+ * @fn 					void send_CMD_PRINT(uint8_t, uint8_t, uint8_t* const, uint8_t*, uint8_t*)
+ * @brief 				Send fourth command to peripheral device - Send string to peripheral and have it print that string
+ *
+ * @pre 				Wait for user GPIO to be pressed and receive ack
+ * @post 				Receives analog value back from peripheral device
+ *
+ * @param dummyRead 	Clears RXNE
+ * @param dummyWrite	Fetches response from peripheral device
+ * @param commandCode	Code to send to peripheral device
+ * @param ackByte 		Checks for ack or nack
+ * @param args 			Arguments to pick peripheral device and pin for LED
+ */
+void send_CMD_PRINT(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) {
+	// Send command
+	SPI_SendData(SPI2, commandCode, 1) ;
+
+	dummy_read_write(dummyRead, dummyWrite) ;
+
+	// Receive the ack byte received
+	SPI_ReceiveData(SPI2, ackByte, 1) ;
+
+	uint8_t message[] = "Hello! How are you?" ;
+	// Verify ack or nack
+	if (SPI_VerifyResponse(*ackByte)) {
+		// Send argument to be length of message
+		args[0] = strlen( (char *)message ) ;
+
+		// Send arguments
+		SPI_SendData(SPI2, args, 1) ; /* 1 byte sent */
+
+		// Do a dummy read to clear off the RXNE
+		SPI_ReceiveData(SPI2, &dummyRead, 1) ;
+
+		// Insert delay so peripheral can have data ready
+		delay();
+
+		// Send message
+		int index = 0 ;
+		while (index < args[0]) {
+			SPI_SendData(SPI2, &message[index], 1) ;
+			SPI_ReceiveData(SPI2, &dummyRead, 1) ;
+			index++ ;
+		}
+//		SPI_SendData(SPI2, message, args[0]) ;
+
+		// Wait for BSY bit to reset  -> This will indicate that SPI is not busy in communication
+		SPI_ResetBusyFlag() ;
+
+		printf("CMD_PRINT executed\n") ;
 	}
 }
