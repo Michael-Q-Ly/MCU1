@@ -53,6 +53,7 @@ static void send_CMD_LED_CTRL(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *co
 static void send_CMD_SENSOR_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) ;
 static void send_CMD_LED_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) ;
 static void send_CMD_PRINT(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) ;
+static void send_CMD_ID_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte) ;
 
 int main(void) {
 	initialise_monitor_handles();
@@ -124,17 +125,19 @@ int main(void) {
         commandCode = COMMAND_PRINT ;
         send_CMD_PRINT(dummyRead, dummyWrite, &commandCode, &ackByte, args) ;
 
-#ifdef later
         /**************************************************************/
-        /*               *5. CMD_ID_READ <analog_pin_no_1>            */
+        /*                        5. CMD_ID_READ                      */
         /**************************************************************/
 
         wait_for_button_press() ;
         commandCode = COMMAND_ID_READ ;
-        send_CMD_ID_READ(dummyRead, dummyWrite, &commandCode, &ackByte, args);
-        /*TODO: move this function prototype and make definition */
-void send_CMD_ID_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) ;
-#endif
+        send_CMD_ID_READ(dummyRead, dummyWrite, &commandCode, &ackByte);
+
+        /**************************************************************/
+        /*               Disable SPI2 communication                   */
+        /**************************************************************/
+        SPI_PeripheralControl(SPI2, DISABLE) ;
+        printf("SPI2 communication closed.\n") ;
     } // End while(1)
 
     // Program should never reach here!
@@ -149,7 +152,7 @@ void send_CMD_ID_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const comm
  * @post				Turn on GPIO B9, B10, C3, C2
  * @note 				B9 = CSZ/NPS | B10 = SCK | C3 = COPI | C2 = CIPO
  */
-void SPI2_GPIOInits(void) {
+static void SPI2_GPIOInits(void) {
     /*
      * Configure the SPI pins
      */
@@ -196,7 +199,7 @@ void SPI2_GPIOInits(void) {
  * 						DFF 8-bit, CPOL_LOW, CPHA_LOW, and hardware periph mgmt
  * 						enabled for CSZ pin
  */
-void SPI2_Inits(void) {
+static void SPI2_Inits(void) {
     SPI_Handle_t SPI2Handle ;
     memset(&SPI2Handle, 0, sizeof(SPI2Handle)) ;
 
@@ -219,7 +222,7 @@ void SPI2_Inits(void) {
  * @pre 				GPIO A0 default
  * @post 				GPIOA0 input button
  */
-void GPIO_ButtonInit(void) {
+static void GPIO_ButtonInit(void) {
     GPIO_Handle_t GPIOHandle ;
     memset(&GPIOHandle, 0, sizeof(GPIOHandle)) ;
 
@@ -249,7 +252,7 @@ void delay(void) {
  * @pre 				User button not pressed
  * @post				User button has been pressed then released
  */
-void wait_for_button_press(void) {
+static void wait_for_button_press(void) {
         // Wait until a button press
         while (!GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0)) ;
 
@@ -267,7 +270,7 @@ void wait_for_button_press(void) {
  * @param[in] ackByte	ACK or NACK
  * @return 				ack = 1, nack = 0
  */
-uint8_t SPI_VerifyResponse(uint8_t ackByte) {
+static uint8_t SPI_VerifyResponse(uint8_t ackByte) {
 	if (ackByte == 0xF5) {
 		// ack
 		return 1 ;
@@ -285,7 +288,7 @@ uint8_t SPI_VerifyResponse(uint8_t ackByte) {
  * @param dummyRead 	Clears RXNE
  * @param dummyWrite 	Fetches response from peripheral device
  */
-void dummy_read_write(uint8_t dummyRead, uint8_t dummyWrite) {
+static void dummy_read_write(uint8_t dummyRead, uint8_t dummyWrite) {
 	// Perform dummy read to clear RXNE
 	SPI_ReceiveData(SPI2, &dummyRead, 1) ;
 
@@ -300,7 +303,7 @@ void dummy_read_write(uint8_t dummyRead, uint8_t dummyWrite) {
  * @pre 				SPI must be asking to receive data
  * @post 				SPI_BSY flag is reset
  */
-void SPI_ResetBusyFlag() {
+static void SPI_ResetBusyFlag() {
 		// Wait for BSY bit to reset  -> This will indicate that SPI is not busy in communication
 		while (SPI_GetFlagStatus(SPI2, SPI_BSY_FLAG) == FLAG_SET) ;
 		// Clear the OVR flag by reading DR and SR
@@ -321,7 +324,7 @@ void SPI_ResetBusyFlag() {
  * @param ackByte 		Checks for ack or nack
  * @param args 			Arguments to pick peripheral device and pin for LED
  */
-void send_CMD_LED_CTRL(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) {
+static void send_CMD_LED_CTRL(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) {
 	// Send command
 	SPI_SendData(SPI2, commandCode, 1) ;
 
@@ -357,7 +360,7 @@ void send_CMD_LED_CTRL(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const com
  * @param ackByte 		Checks for ack or nack
  * @param args 			Arguments to pick peripheral device and pin for LED
  */
-void send_CMD_SENSOR_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) {
+static void send_CMD_SENSOR_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) {
 	// Send command
 	SPI_SendData(SPI2, commandCode, 1) ;
 
@@ -389,7 +392,7 @@ void send_CMD_SENSOR_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const 
 		// Wait for BSY bit to reset  -> This will indicate that SPI is not busy in communication
 		SPI_ResetBusyFlag() ;
 
-		printf("CMD_SENSOR_READ %d\n", analogRead) ;
+		printf("CMD_SENSOR_READ: %d\n", analogRead) ;
 	}
 }
 
@@ -405,7 +408,7 @@ void send_CMD_SENSOR_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const 
  * @param ackByte 		Checks for ack or nack
  * @param args 			Arguments to pick peripheral device and pin for LED
  */
-void send_CMD_LED_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) {
+static void send_CMD_LED_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) {
 	// Send command
 	SPI_SendData(SPI2, commandCode, 1) ;
 
@@ -416,7 +419,7 @@ void send_CMD_LED_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const com
 
 	// Verify ack or nack
 	if (SPI_VerifyResponse(*ackByte)) {
-		// Send arguments
+		// Send argument
 		args[0] = UNOR3_ANALOG_PIN_NO_0 ;
 
 		// Send arguments
@@ -437,7 +440,7 @@ void send_CMD_LED_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const com
 		// Wait for BSY bit to reset  -> This will indicate that SPI is not busy in communication
 		SPI_ResetBusyFlag() ;
 
-		printf("CMD_LED_READ %s\n", ledStatus == LED_ON ? "ON" : "OFF") ;
+		printf("CMD_LED_READ: %s\n", ledStatus == LED_ON ? "ON" : "OFF") ;
 	}
 }
 
@@ -454,7 +457,7 @@ void send_CMD_LED_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const com
  * @param ackByte 		Checks for ack or nack
  * @param args 			Arguments to pick peripheral device and pin for LED
  */
-void send_CMD_PRINT(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) {
+static void send_CMD_PRINT(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte, uint8_t *args) {
 	// Send command
 	SPI_SendData(SPI2, commandCode, 1) ;
 
@@ -485,11 +488,54 @@ void send_CMD_PRINT(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const comman
 			SPI_ReceiveData(SPI2, &dummyRead, 1) ;
 			index++ ;
 		}
-//		SPI_SendData(SPI2, message, args[0]) ;
 
 		// Wait for BSY bit to reset  -> This will indicate that SPI is not busy in communication
 		SPI_ResetBusyFlag() ;
 
 		printf("CMD_PRINT executed\n") ;
+	}
+}
+
+/**
+ * @fn 					void send_CMD_ID_READ(uint8_t, uint8_t, uint8_t* const, uint8_t*, uint8_t*)
+ * @brief 				Send fifth command to peripheral device - Get the ID of device
+ *
+ * @pre 				Wait for user GPIO to be pressed and receive ack
+ * @post 				Receives analog value back from peripheral device
+ *
+ * @param dummyRead 	Clears RXNE
+ * @param dummyWrite	Fetches response from peripheral device
+ * @param commandCode	Code to send to peripheral device
+ * @param ackByte 		Checks for ack or nack
+ * @param args 			Arguments to pick peripheral device and pin for LED
+ */
+static void send_CMD_ID_READ(uint8_t dummyRead, uint8_t dummyWrite, uint8_t *const commandCode, uint8_t *ackByte) {
+	// Send command
+	SPI_SendData(SPI2, commandCode, 1) ;
+
+	dummy_read_write(dummyRead, dummyWrite) ;
+
+	// Receive the ack byte received
+	SPI_ReceiveData(SPI2, ackByte, 1) ;
+
+	uint8_t const deviceIDLength = 11 ;
+	uint8_t id[deviceIDLength] ;
+	// Verify ack or nack
+	if (SPI_VerifyResponse(*ackByte)) {
+		// Get peripheral device ID
+		uint32_t index = 0 ;
+		while (index < deviceIDLength-1) {
+			// Send arguments
+			SPI_SendData(SPI2, &dummyWrite, 1) ; /* 1 byte sent */
+			// Read the 10-byte ID from peripheral
+			SPI_ReceiveData(SPI2, &id[index], 1) ;
+			index++ ;
+		}
+		id[deviceIDLength-1] = '\0' ;
+
+		// Wait for BSY bit to reset  -> This will indicate that SPI is not busy in communication
+		SPI_ResetBusyFlag() ;
+
+		printf("CMD_ID_READ received: %s\n", id) ;
 	}
 }
