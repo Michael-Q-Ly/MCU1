@@ -29,23 +29,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  12 .ARM.attributes 0000002a  00000000  00000000  00020070  2**0
                   CONTENTS, READONLY
- 13 .debug_info   00001739  00000000  00000000  0002009a  2**0
+ 13 .debug_info   00001769  00000000  00000000  0002009a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 00000500  00000000  00000000  000217d3  2**0
+ 14 .debug_abbrev 00000511  00000000  00000000  00021803  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_aranges 00000198  00000000  00000000  00021cd8  2**3
+ 15 .debug_aranges 00000198  00000000  00000000  00021d18  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_ranges 00000178  00000000  00000000  00021e70  2**3
+ 16 .debug_ranges 00000178  00000000  00000000  00021eb0  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  00002332  00000000  00000000  00021fe8  2**0
+ 17 .debug_macro  0000235c  00000000  00000000  00022028  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0000188d  00000000  00000000  0002431a  2**0
+ 18 .debug_line   00001940  00000000  00000000  00024384  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    0000a216  00000000  00000000  00025ba7  2**0
+ 19 .debug_str    0000a270  00000000  00000000  00025cc4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000050  00000000  00000000  0002fdbd  2**0
+ 20 .comment      00000050  00000000  00000000  0002ff34  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  000011bc  00000000  00000000  0002fe10  2**2
+ 21 .debug_frame  000011bc  00000000  00000000  0002ff84  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1788,7 +1788,7 @@ int main(void) {
  8000d3e:	f000 f9df 	bl	8001100 <send_CMD_PRINT>
 
         /**************************************************************/
-        /*               *5. CMD_ID_READ <analog_pin_no_1>            */
+        /*                        5. CMD_ID_READ                      */
         /**************************************************************/
 
         wait_for_button_press() ;
@@ -1803,7 +1803,9 @@ int main(void) {
  8000d50:	79b8      	ldrb	r0, [r7, #6]
  8000d52:	f000 fa41 	bl	80011d8 <send_CMD_ID_READ>
 
-        /* Disable SPI2 communication */
+        /**************************************************************/
+        /*               Disable SPI2 communication                   */
+        /**************************************************************/
         SPI_PeripheralControl(SPI2, DISABLE) ;
  8000d56:	2100      	movs	r1, #0
  8000d58:	4805      	ldr	r0, [pc, #20]	; (8000d70 <main+0xd0>)

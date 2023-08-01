@@ -255,7 +255,38 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t len) {
  * 
  */
 void SPI_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi) {
-
+    // If enabling,
+    if (EnorDi == ENABLE) {
+        // Check the IRQ number and set the corresponding ISE register
+        if (IRQNumber <= END_BIT_OF_ISER0) {
+            // Program ISER0 register
+            *NVIC_ISER0 |= (1 << IRQNumber) ;
+        }
+        else if ((IRQNumber >= START_BIT_OF_ISER1) && (IRQNumber <= END_BIT_OF_ISER1)) {
+            // Program ISER1 register
+            *NVIC_ISER1 |= (1 << (IRQNumber % (1 * SIZE_OF_ISERx_REG))) ;
+        }
+        else if ((IRQNumber >= START_BIT_OF_ISER2) && (IRQNumber <= END_BIT_OF_ISER2)) {
+            // Program ISER2 register
+            *NVIC_ISER2 |= (1 << (IRQNumber % (2 * SIZE_OF_ISERx_REG))) ;
+        }
+    }
+    // Else if disabling,
+    else {
+        // Check the IRQ number and clear the corresponding ISE register
+        if (IRQNumber <= END_BIT_OF_ICER0) {
+            // Program ICER0 register
+            *NVIC_ICER0 |= (1 << IRQNumber) ;
+        }
+        else if ((IRQNumber >= START_BIT_OF_ICER1) && (IRQNumber <= END_BIT_OF_ICER1)) {
+            // Program ICER1 register
+            *NVIC_ICER1 |= (1 << (IRQNumber % (1 * SIZE_OF_ICERx_REG))) ;
+        }
+        else if ((IRQNumber >= START_BIT_OF_ICER2) && (IRQNumber <= END_BIT_OF_ICER2)) {
+            // Program ICER2 register
+            *NVIC_ICER2 |= (1 << (IRQNumber % (2 * SIZE_OF_ICERx_REG))) ;
+        }
+    }
 }
 
 /****************************************************************************************************
@@ -272,7 +303,15 @@ void SPI_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi) {
  * 
  */
 void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority) {
+    // 1. Calculate which IPR register to use
+    uint8_t iprx = IRQNumber / 4 ;
+    uint8_t iprx_bit = IRQNumber % 4 ;
 
+    uint8_t shift_amount = (8 * iprx_bit) + (8 - NO_PRIORITY_BITS_IMPLEMENTED) ;
+
+    // Write to the IPR after clearing the byte offset
+    *(NVIC_PR_BASE_ADDR + iprx) &= ~(0xFF << shift_amount) ;
+    *(NVIC_PR_BASE_ADDR + iprx) |= (IRQPriority << shift_amount) ;
 }
 
 /****************************************************************************************************
