@@ -236,26 +236,34 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t len) {
 
 
 /****************************************************************************************************
- * @fn 					void SPI_SendData_IT(SPI_Handle_t*, uint8_t*, uint32_t)
- * @brief 				Send SPI data on interrupt
- *
+ * @fn 					uint8_t SPI_SendData_IT(SPI_Handle_t*, uint8_t*, uint32_t)
+ * @brief
  * @pre 				Interrupt occurs to trigger SPI TX
  * @post				SPI data sent to receiver
  *
  * @param pSPIHandle 	Struct containing SPI peripheral number and SPI config settings
  * @param pTxBuffer 	Pointer to the transmitter buffer
  * @param len			Length (size) of the data transfer in bytes
+ * @return state 		State of SPI transmission
  */
-void SPI_SendData_IT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer, uint32_t len) {
-	// 1. Save the Tx buffer address and Len information in some global variables
+uint8_t SPI_SendData_IT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer, uint32_t len) {
+	uint8_t state = pSPIHandle->TxState ;
 
-	// 2, Mark the SPI state as busy in transmission so that no other code over the
-	//    same SPI peripheral until transmission is over
+	if (state != SPI_BUSY_IN_RX) {
+		// 1. Save the Tx buffer address and Len information in some global variables
+		pSPIHandle->pTxBuffer = pTXBuffer ;
+		pSPIHandle->TxLen = len ;
 
-	// 3. Enable the TXEIE control bit to get interrupt whenever TXEflag is set in SR
+		// 2, Mark the SPI state as busy in transmission so that no other code over the
+		//    same SPI peripheral until transmission is over
+		pSPIHandle->TxState = SPI_BUSY_IN_TX ;
 
+		// 3. Enable the TXEIE control bit to get interrupt whenever TXE flag is set in SR
+		pSPIHandle->pSPIx->CR2 |= (1 << SPI_CR2_TXEIE) ;
+	}
 	// 4. Data transmission will be handled by the ISR code (will implement later)
 
+	return state ;
 }
 
 /****************************************************************************************************
