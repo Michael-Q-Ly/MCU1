@@ -232,6 +232,44 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t len) {
             pRxBuffer++ ;
         }
     }
+}
+
+
+/****************************************************************************************************
+ * @fn 					void SPI_SendData_IT(SPI_Handle_t*, uint8_t*, uint32_t)
+ * @brief 				Send SPI data on interrupt
+ *
+ * @pre 				Interrupt occurs to trigger SPI TX
+ * @post				SPI data sent to receiver
+ *
+ * @param pSPIHandle 	Struct containing SPI peripheral number and SPI config settings
+ * @param pTxBuffer 	Pointer to the transmitter buffer
+ * @param len			Length (size) of the data transfer in bytes
+ */
+void SPI_SendData_IT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer, uint32_t len) {
+	// 1. Save the Tx buffer address and Len information in some global variables
+
+	// 2, Mark the SPI state as busy in transmission so that no other code over the
+	//    same SPI peripheral until transmission is over
+
+	// 3. Enable the TXEIE control bit to get interrupt whenever TXEflag is set in SR
+
+	// 4. Data transmission will be handled by the ISR code (will implement later)
+
+}
+
+/****************************************************************************************************
+ * @fn 					void SPI_ReceiveData_IT(SPI_Handle_t*, uint8_t*, uint32_t)
+ * @brief				Receive SPI data on interrupt
+ *
+ * @pre 				Interrupt occurs for SPI data receive
+ * @post				SPI data received after ISR
+ *
+ * @param pSPIHandle 	Struct containing SPI peripheral number and SPI config settings
+ * @param pRxBuffer 	Pointer to the transmitter buffer
+ * @param len			Length (size) of the data transferred in bytes
+ */
+void SPI_ReceiveData_IT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t len) {
 
 }
 
