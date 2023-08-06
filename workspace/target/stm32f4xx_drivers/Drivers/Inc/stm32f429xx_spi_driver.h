@@ -42,6 +42,14 @@ typedef struct {
 } SPI_Handle_t ;
 
 /*
+ * SPI Application States
+ */
+
+#define SPI_READY 			0
+#define SPI_BUSY_IN_RX 		1
+#define SPI_BUSY_IN_TX 		2
+
+/*
  * @SPI_DeviceMode
  * SPI Configuration: Device Mode as a controller or peripheral
  */
@@ -112,7 +120,6 @@ typedef struct {
 #define SPI_RXNE_FLAG						(1 << SPI_SR_RXNE)      /*!< Status Register RX EnableZ flag >*/
 #define SPI_TXE_FLAG                        (1 << SPI_SR_TXE)       /*!< Status Register TX Enable flag >*/
 #define SPI_BSY_FLAG                        (1 << SPI_SR_BSY)       /*!< Status Register SPI Busy flag >*/
-
 
 
 
